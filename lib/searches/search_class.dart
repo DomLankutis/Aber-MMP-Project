@@ -41,8 +41,8 @@ abstract class SearchClass {
   Duration _deltaTime = Duration.zero;
 
   SearchClass(this.arraySize, this.searchFor, this.paint, this.offset) {
-    arraySize = arr.length;
     arr = List.generate(arraySize, (index) => ArrayElement(index, Colors.red));
+    arraySize = arr.length;
   }
 
   void calculateDeltaTime() {
