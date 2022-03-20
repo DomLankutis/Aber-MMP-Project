@@ -12,6 +12,13 @@ class LinearSearch extends SearchClass {
           offset,
         );
 
+  static Map<Color, String> getColorExplanations() {
+    return {
+      Colors.red: "Default colour, has no meaning",
+      Colors.blue: "Element which the array is comparing",
+    };
+  }
+
   @override
   void iteration() {
     arr[lookingAt].color = Colors.blue;

@@ -2,6 +2,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/array_element.dart';
 
+// TODO: Add IncreasedFixedStepSize
+
 abstract class SearchClass {
   static const double smallCanvasPixelSize = 20;
   static const double mediumCanvasPixelSize = 5;
@@ -33,6 +35,7 @@ abstract class SearchClass {
 
   int _iterationCount = 0;
   List<FlSpot> plotData = List.generate(0, (index) => FlSpot.nullSpot);
+
   late DateTime _currentTime;
   DateTime _lastTime = DateTime.now();
   Duration _deltaTime = Duration.zero;

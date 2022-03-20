@@ -3,6 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:search_algorithm_visualiser/custom_painter.dart';
+import 'package:search_algorithm_visualiser/help_widget.dart';
+import 'package:search_algorithm_visualiser/searches/binary_search.dart';
+import 'package:search_algorithm_visualiser/searches/fixed_step_search.dart';
+import 'package:search_algorithm_visualiser/searches/linear_Search.dart';
 import 'package:search_algorithm_visualiser/searches/search_class.dart';
 
 enum SearchAlgorithm { linear, binary, fixed }
@@ -104,6 +108,16 @@ class _HomePageState extends State<HomePage> {
   //TODO: Add marking for each canvas rendering boundary
 
   //TODO: Add explanations for what special colours mean in the visualiser
+  Map<Color, String> getSearchColorExplanation() {
+    switch (_algorithm!) {
+      case SearchAlgorithm.linear:
+        return LinearSearch.getColorExplanations();
+      case SearchAlgorithm.binary:
+        return BinarySearch.getColorExplanations();
+      case SearchAlgorithm.fixed:
+        return FixedStepSearch.getColorExplanations();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,14 +145,8 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                     child: SizedBox(
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width * 0.45,
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.85,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      height: MediaQuery.of(context).size.height * 0.85,
                       child: Card(
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         child: Column(
@@ -146,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             const Padding(
                               padding:
-                              EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                                  EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
                               child: Text("Select Algorithm"),
                             ),
                             Expanded(
@@ -156,14 +164,8 @@ class _HomePageState extends State<HomePage> {
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       20, 0, 20, 0),
                                   child: Container(
-                                    width: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width,
-                                    height: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .height *
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height *
                                         0.4,
                                     alignment: const AlignmentDirectional(0, 0),
                                     child: Card(
@@ -174,19 +176,19 @@ class _HomePageState extends State<HomePage> {
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,
                                           mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                              MainAxisAlignment.center,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             RadioListTile<SearchAlgorithm>(
                                               title:
-                                              const Text('Linear Search'),
+                                                  const Text('Linear Search'),
                                               value: SearchAlgorithm.linear,
                                               groupValue: _algorithm,
                                               onChanged:
-                                              (algorithmRadioListChanged),
+                                                  (algorithmRadioListChanged),
                                               visualDensity:
-                                              const VisualDensity(
+                                                  const VisualDensity(
                                                 horizontal: VisualDensity
                                                     .minimumDensity,
                                                 vertical: VisualDensity
@@ -195,13 +197,13 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                             RadioListTile<SearchAlgorithm>(
                                               title:
-                                              const Text('Binary Search'),
+                                                  const Text('Binary Search'),
                                               value: SearchAlgorithm.binary,
                                               groupValue: _algorithm,
                                               onChanged:
-                                              (algorithmRadioListChanged),
+                                                  (algorithmRadioListChanged),
                                               visualDensity:
-                                              const VisualDensity(
+                                                  const VisualDensity(
                                                 horizontal: VisualDensity
                                                     .minimumDensity,
                                                 vertical: VisualDensity
@@ -214,9 +216,9 @@ class _HomePageState extends State<HomePage> {
                                               value: SearchAlgorithm.fixed,
                                               groupValue: _algorithm,
                                               onChanged:
-                                              (algorithmRadioListChanged),
+                                                  (algorithmRadioListChanged),
                                               visualDensity:
-                                              const VisualDensity(
+                                                  const VisualDensity(
                                                 horizontal: VisualDensity
                                                     .minimumDensity,
                                                 vertical: VisualDensity
@@ -230,6 +232,13 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                               ),
+                            ),
+                            SingleChildScrollView(
+                              child: Card(
+                                child: HelpWidget(
+                                  colorsToExplain: getSearchColorExplanation(),
+                                ),
+                              ),
                             )
                           ],
                         ),
@@ -239,14 +248,8 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                     child: SizedBox(
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width * 0.45,
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.85,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      height: MediaQuery.of(context).size.height * 0.85,
                       child: Card(
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         child: Column(
@@ -254,22 +257,19 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             const Padding(
                               padding:
-                              EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                                  EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                               child: Text("Select Parameters"),
                             ),
                             Padding(
                               padding: const EdgeInsetsDirectional.all(5),
                               child: SizedBox(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
+                                width: MediaQuery.of(context).size.width,
                                 child: Card(
                                   clipBehavior: Clip.antiAliasWithSaveLayer,
                                   child: Padding(
                                     padding:
-                                    const EdgeInsetsDirectional.fromSTEB(
-                                        10, 5, 10, 5),
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            10, 5, 10, 5),
                                     child: InputDecorator(
                                       decoration: const InputDecoration(
                                         label: Text("Array Size"),
@@ -285,7 +285,7 @@ class _HomePageState extends State<HomePage> {
                                         max: _maximumArraySize.toDouble(),
                                         divisions: _maximumArraySize,
                                         label:
-                                        _arraySizeSlider.round().toString(),
+                                            _arraySizeSlider.round().toString(),
                                         onChanged: (val) {
                                           setState(() {
                                             _arraySizeSlider = val;
@@ -300,10 +300,7 @@ class _HomePageState extends State<HomePage> {
                             Padding(
                               padding: const EdgeInsetsDirectional.all(5),
                               child: SizedBox(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
+                                width: MediaQuery.of(context).size.width,
                                 child: Card(
                                   clipBehavior: Clip.antiAliasWithSaveLayer,
                                   child: Column(
@@ -311,77 +308,77 @@ class _HomePageState extends State<HomePage> {
                                     children: [
                                       const Text('Search For'),
                                       Padding(
-                                          padding: const EdgeInsetsDirectional
-                                              .fromSTEB(0, 10, 0, 15),
-                                          child: Column(
-                                            children: [
-                                              RadioListTile<String>(
-                                                title:
-                                                const Text("First Element"),
-                                                onChanged:
-                                                parameterRadioListChanged,
-                                                groupValue: _elementToSearchFor,
-                                                value: "first",
-                                                visualDensity:
-                                                const VisualDensity(
-                                                  horizontal: VisualDensity
-                                                      .minimumDensity,
-                                                  vertical: VisualDensity
-                                                      .minimumDensity,
-                                                ),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0, 10, 0, 15),
+                                        child: Column(
+                                          children: [
+                                            RadioListTile<String>(
+                                              title:
+                                                  const Text("First Element"),
+                                              onChanged:
+                                                  parameterRadioListChanged,
+                                              groupValue: _elementToSearchFor,
+                                              value: "first",
+                                              visualDensity:
+                                                  const VisualDensity(
+                                                horizontal: VisualDensity
+                                                    .minimumDensity,
+                                                vertical: VisualDensity
+                                                    .minimumDensity,
                                               ),
-                                              RadioListTile<String>(
-                                                title: const Text(
-                                                    "Middle Element"),
-                                                onChanged:
-                                                parameterRadioListChanged,
-                                                groupValue: _elementToSearchFor,
-                                                value: "middle",
-                                                visualDensity:
-                                                const VisualDensity(
-                                                  horizontal: VisualDensity
-                                                      .minimumDensity,
-                                                  vertical: VisualDensity
-                                                      .minimumDensity,
-                                                ),
+                                            ),
+                                            RadioListTile<String>(
+                                              title:
+                                                  const Text("Middle Element"),
+                                              onChanged:
+                                                  parameterRadioListChanged,
+                                              groupValue: _elementToSearchFor,
+                                              value: "middle",
+                                              visualDensity:
+                                                  const VisualDensity(
+                                                horizontal: VisualDensity
+                                                    .minimumDensity,
+                                                vertical: VisualDensity
+                                                    .minimumDensity,
                                               ),
-                                              RadioListTile<String>(
-                                                title:
-                                                const Text("Last Element"),
-                                                onChanged:
-                                                parameterRadioListChanged,
-                                                groupValue: _elementToSearchFor,
-                                                value: "last",
-                                                visualDensity:
-                                                const VisualDensity(
-                                                  horizontal: VisualDensity
-                                                      .minimumDensity,
-                                                  vertical: VisualDensity
-                                                      .minimumDensity,
-                                                ),
+                                            ),
+                                            RadioListTile<String>(
+                                              title: const Text("Last Element"),
+                                              onChanged:
+                                                  parameterRadioListChanged,
+                                              groupValue: _elementToSearchFor,
+                                              value: "last",
+                                              visualDensity:
+                                                  const VisualDensity(
+                                                horizontal: VisualDensity
+                                                    .minimumDensity,
+                                                vertical: VisualDensity
+                                                    .minimumDensity,
                                               ),
-                                              RadioListTile<String>(
-                                                title: const Text(
-                                                    "Random Element"),
-                                                onChanged:
-                                                parameterRadioListChanged,
-                                                groupValue: _elementToSearchFor,
-                                                value: "random",
-                                                visualDensity:
-                                                const VisualDensity(
-                                                  horizontal: VisualDensity
-                                                      .minimumDensity,
-                                                  vertical: VisualDensity
-                                                      .minimumDensity,
-                                                ),
+                                            ),
+                                            RadioListTile<String>(
+                                              title:
+                                                  const Text("Random Element"),
+                                              onChanged:
+                                                  parameterRadioListChanged,
+                                              groupValue: _elementToSearchFor,
+                                              value: "random",
+                                              visualDensity:
+                                                  const VisualDensity(
+                                                horizontal: VisualDensity
+                                                    .minimumDensity,
+                                                vertical: VisualDensity
+                                                    .minimumDensity,
                                               ),
-                                            ],
-                                          ))
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),

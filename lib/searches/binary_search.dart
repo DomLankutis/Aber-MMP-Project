@@ -9,17 +9,30 @@ class BinarySearch extends SearchClass {
   BinarySearch(this.first, this.last, int arrSize, int searchFor,
       Animation<double> offset)
       : super(
-          arrSize,
-          searchFor,
-          Paint(),
-          offset,
-        ) {
+    arrSize,
+    searchFor,
+    Paint(),
+    offset,
+  ) {
     getMiddle();
   }
 
   int getMiddle() {
     return middle = ((first + last) / 2).floor();
   }
+
+  /*
+   Want to have this in SearchClass and then override with extras but cant figure it out,
+   not worth spending lots of time on this.
+   */
+  static Map<Color, String> getColorExplanations() {
+    return {
+      Colors.red: "Default colour, has no meaning",
+      Colors.blue: "Element which the array is comparing",
+      Colors.green: "Shows which element is first and last",
+    };
+  }
+
 
   @override
   void iteration() {

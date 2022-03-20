@@ -19,6 +19,13 @@ class FixedStepSearch extends SearchClass {
         (position < arrSize) && (arr[position].value < searchFor);
   }
 
+  static Map<Color, String> getColorExplanations() {
+    return {
+      Colors.red: "Default colour, has no meaning",
+      Colors.blue: "Element which the array is comparing",
+    };
+  }
+
   @override
   void iteration() {
     if (_whileLoopConditionMet) {
