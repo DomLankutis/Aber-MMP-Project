@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:search_algorithm_visualiser/custom_painter.dart';
 import 'package:search_algorithm_visualiser/help_widget.dart';
-import 'package:search_algorithm_visualiser/searches/binary_search.dart';
-import 'package:search_algorithm_visualiser/searches/fixed_step_search.dart';
-import 'package:search_algorithm_visualiser/searches/linear_Search.dart';
 import 'package:search_algorithm_visualiser/searches/search_class.dart';
 
 enum SearchAlgorithm { linear, binary, fixed }
@@ -106,18 +103,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   //TODO: Add marking for each canvas rendering boundary
-
-  //TODO: Add explanations for what special colours mean in the visualiser
-  Map<Color, String> getSearchColorExplanation() {
-    switch (_algorithm!) {
-      case SearchAlgorithm.linear:
-        return LinearSearch.getColorExplanations();
-      case SearchAlgorithm.binary:
-        return BinarySearch.getColorExplanations();
-      case SearchAlgorithm.fixed:
-        return FixedStepSearch.getColorExplanations();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -236,7 +221,7 @@ class _HomePageState extends State<HomePage> {
                             SingleChildScrollView(
                               child: Card(
                                 child: HelpWidget(
-                                  colorsToExplain: getSearchColorExplanation(),
+                                  algorithm: _algorithm!,
                                 ),
                               ),
                             )
