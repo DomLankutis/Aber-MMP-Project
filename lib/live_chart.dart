@@ -8,12 +8,13 @@ class LiveChart extends StatelessWidget {
 
   const LiveChart({Key? key, required this.search}) : super(key: key);
 
+  // Run this with a set state or something and it should update as it runs
   List<FlSpot> calculatePlotData() {
     List<FlSpot> data = List<FlSpot>.empty(growable: true);
-    for (int i = 0; i < 10000; i++) {
-      SearchClass _search = search;
+    for (int i = 1; i < 5000000; i += 100000) {
+      search.updateArray(i);
       final stopwatch = Stopwatch()..start();
-      _search.fastRun();
+      search.fastRun();
       stopwatch.stop();
       var timeTaken = stopwatch.elapsed.inMicroseconds;
       data.add(FlSpot(i.toDouble(), timeTaken.toDouble()));
@@ -27,14 +28,25 @@ class LiveChart extends StatelessWidget {
       child: const Text("Live Chart"),
       onPressed: () {
         showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return Center(
-                child: LineChart(LineChartData(
-                  lineBarsData: [LineChartBarData(spots: calculatePlotData())],
-                )),
-              );
-            });
+          context: context,
+          builder: (BuildContext context) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: LineChart(
+                LineChartData(
+                  lineBarsData: [
+                    LineChartBarData(
+                      isCurved: true,
+                      isStrokeCapRound: true,
+                      dotData: FlDotData(show: false),
+                      spots: calculatePlotData(),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
       },
     );
   }

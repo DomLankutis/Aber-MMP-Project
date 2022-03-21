@@ -4,7 +4,7 @@ import 'package:search_algorithm_visualiser/searches/search_class.dart';
 class LinearSearch extends SearchClass {
   int lookingAt = 0;
 
-  LinearSearch(int arrSize, int searchFor, Animation<double> offset)
+  LinearSearch(int arrSize, int searchFor, Animation<double>? offset)
       : super(
           arrSize,
           searchFor,
@@ -13,16 +13,13 @@ class LinearSearch extends SearchClass {
         );
 
   static Map<Color, String> getColorExplanations() {
-    return {
-      Colors.red: "Default colour, has no meaning",
-      Colors.blue: "Element which the array is comparing",
-    };
+    return SearchClass.baseExplanations;
   }
 
   @override
   void fastRun() {
-    for (var e in arr) {
-      if (e.value == searchFor) {
+    for (int i = 0; i < fastArr.length; i++) {
+      if (fastArr[i] == fastSearchFor) {
         return;
       }
     }

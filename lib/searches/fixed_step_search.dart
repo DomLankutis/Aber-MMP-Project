@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/searches/search_class.dart';
 
@@ -10,7 +12,7 @@ class FixedStepSearch extends SearchClass {
   late bool _whileLoopConditionMet;
 
   FixedStepSearch(
-      int arrSize, int searchFor, Animation<double> offset, this.stepSize)
+      int arrSize, int searchFor, Animation<double>? offset, this.stepSize)
       : super(
           arrSize,
           searchFor,
@@ -22,25 +24,28 @@ class FixedStepSearch extends SearchClass {
     _initialStepSize = stepSize;
   }
 
+  @override
+  void updateArray(int newSize) {
+    super.updateArray(newSize);
+    _initialStepSize = sqrt(arraySize).round().abs();
+  }
+
   static Map<Color, String> getColorExplanations() {
-    return {
-      Colors.red: "Default colour, has no meaning",
-      Colors.blue: "Element which the array is comparing",
-    };
+    return SearchClass.baseExplanations;
   }
 
   @override
   void fastRun() {
     int _pos = 0;
     int _stepSize = _initialStepSize;
-    while ((_pos < arraySize) && (arr[_pos].value < searchFor)) {
+    while ((_pos < fastArr.length) && (fastArr[_pos] < fastSearchFor)) {
       _pos += stepSize;
     }
-    if ((_pos >= arraySize) || (arr[_pos].value > searchFor)) {
+    if ((_pos >= fastArr.length) || (fastArr[_pos] > fastSearchFor)) {
       do {
         _pos--;
         _stepSize--;
-        if ((_pos < arraySize) && (arr[_pos].value == searchFor)) {
+        if ((_pos < fastArr.length) && (fastArr[_pos] == fastSearchFor)) {
           return;
         }
       } while (_stepSize > 0);

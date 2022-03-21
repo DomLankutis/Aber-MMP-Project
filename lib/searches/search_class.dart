@@ -14,30 +14,45 @@ abstract class SearchClass {
 
   static const double maxAnimationHeight = 10;
 
+  static final Map<Color, String> baseExplanations = {
+    Colors.red: "Default colour, has no meaning",
+    Colors.yellow: "Element which we are searching for",
+    Colors.blue: "Element which the array is comparing",
+  };
+
   static int calculateMaximumSize(double pixelSize, double gapSize) {
     int _screenWidth =
-    MediaQueryData
-        .fromWindow(WidgetsBinding.instance!.window)
-        .size
-        .width
-        .toInt();
+        MediaQueryData.fromWindow(WidgetsBinding.instance!.window)
+            .size
+            .width
+            .toInt();
 
     int maxSize = (_screenWidth / pixelSize).floor();
     return ((_screenWidth - gapSize * maxSize) / pixelSize).floor();
   }
 
   late Paint paint;
-  late Animation<double> offset;
+  late Animation<double>? offset;
 
   late int arraySize;
   late int searchFor;
   late List<ArrayElement> arr;
 
+  late List<int> fastArr;
+  late int fastSearchFor;
+
   int fastIterationCount = 0;
 
   SearchClass(this.arraySize, this.searchFor, this.paint, this.offset) {
     arr = List.generate(arraySize, (index) => ArrayElement(index, Colors.red));
-    arraySize = arr.length;
+  }
+
+  /*
+    Assumes we only run for the live chart
+   */
+  void updateArray(int newSize) {
+    fastArr = List.generate(newSize, (index) => index);
+    fastSearchFor = (newSize * (searchFor / arraySize)).toInt();
   }
 
   void iteration() {
@@ -56,14 +71,13 @@ abstract class SearchClass {
         text: TextSpan(text: item.value.toString()),
         textAlign: TextAlign.justify,
         textDirection: TextDirection.ltr,
-      )
-        ..layout(maxWidth: size.width);
+      )..layout(maxWidth: size.width);
 
       var i = item.value;
       var gap = smallGap;
       var _size = const Size(smallCanvasPixelSize, smallCanvasPixelSize);
       var pos = Offset(gap * i + (i * _size.width),
-          50.0 + (item.color == Colors.blue ? offset.value : 0));
+          50.0 + (item.color == Colors.blue ? offset!.value : 0));
 
       canvas.drawRect(pos & _size, paint);
       _textPainter.paint(canvas, pos + const Offset(2.5, 0));
@@ -78,7 +92,7 @@ abstract class SearchClass {
       var gap = mediumGap;
       var _size = const Size(mediumCanvasPixelSize, mediumCanvasPixelSize);
       var pos = Offset(gap * i + (i * _size.width),
-          50 + (item.color == Colors.blue ? offset.value : 0));
+          50 + (item.color == Colors.blue ? offset!.value : 0));
 
       canvas.drawRect(pos & _size, paint);
     }
@@ -94,7 +108,7 @@ abstract class SearchClass {
       var gap = largeGap;
       var _size = const Size(largeCanvasPixelSize, largeCanvasPixelSize);
       var pos = Offset(gap * i + (i * _size.width),
-          50.0 + (item.color == Colors.blue ? offset.value : 0));
+          50.0 + (item.color == Colors.blue ? offset!.value : 0));
 
       canvas.drawRect(pos & _size, paint);
     }

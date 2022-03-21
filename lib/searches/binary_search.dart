@@ -11,7 +11,7 @@ class BinarySearch extends SearchClass {
   late int _fastMiddle;
 
   BinarySearch(this.first, this.last, int arrSize, int searchFor,
-      Animation<double> offset)
+      Animation<double>? offset)
       : super(
           arrSize,
           searchFor,
@@ -24,6 +24,12 @@ class BinarySearch extends SearchClass {
     _fastMiddle = middle;
   }
 
+  @override
+  void updateArray(int newSize) {
+    super.updateArray(newSize);
+    _fastLast = fastArr.length;
+  }
+
   int getMiddle() {
     return ((first + last) / 2).floor();
   }
@@ -34,8 +40,7 @@ class BinarySearch extends SearchClass {
    */
   static Map<Color, String> getColorExplanations() {
     return {
-      Colors.red: "Default colour, has no meaning",
-      Colors.blue: "Element which the array is comparing",
+      ...SearchClass.baseExplanations,
       Colors.green: "Shows which element is first and last",
     };
   }
@@ -75,7 +80,7 @@ class BinarySearch extends SearchClass {
       var _size = const Size(
           SearchClass.largeCanvasPixelSize, SearchClass.largeCanvasPixelSize);
       var pos = Offset(gap * i + (i * _size.width),
-          50 + ((first <= i && i <= last) ? offset.value : 0));
+          50 + ((first <= i && i <= last) ? offset!.value : 0));
 
       canvas.drawRect(pos & _size, paint);
     }
@@ -85,9 +90,9 @@ class BinarySearch extends SearchClass {
   void fastRun() {
     if (_fastLast >= _fastFirst) {
       _fastMiddle = ((_fastFirst + _fastLast) / 2).floor();
-      if (searchFor == arr[_fastMiddle].value) {
+      if (fastSearchFor == fastArr[_fastMiddle]) {
         return;
-      } else if (searchFor > arr[_fastMiddle].value) {
+      } else if (fastSearchFor > fastArr[_fastMiddle]) {
         _fastFirst = _fastMiddle + 1;
         fastRun();
       } else {
