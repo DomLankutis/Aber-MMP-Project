@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/searches/search_class.dart';
 
+// TODO: StepSize as parameter in gui
 class FixedStepSearch extends SearchClass {
   int position = 0;
   int stepSize;
+  late int _initialStepSize;
 
   late bool _whileLoopConditionMet;
 
@@ -17,6 +19,7 @@ class FixedStepSearch extends SearchClass {
         ) {
     _whileLoopConditionMet =
         (position < arrSize) && (arr[position].value < searchFor);
+    _initialStepSize = stepSize;
   }
 
   static Map<Color, String> getColorExplanations() {
@@ -24,6 +27,25 @@ class FixedStepSearch extends SearchClass {
       Colors.red: "Default colour, has no meaning",
       Colors.blue: "Element which the array is comparing",
     };
+  }
+
+  @override
+  void fastRun() {
+    int _pos = 0;
+    int _stepSize = _initialStepSize;
+    while ((_pos < arraySize) && (arr[_pos].value < searchFor)) {
+      _pos += stepSize;
+    }
+    if ((_pos >= arraySize) || (arr[_pos].value > searchFor)) {
+      do {
+        _pos--;
+        _stepSize--;
+        if ((_pos < arraySize) && (arr[_pos].value == searchFor)) {
+          return;
+        }
+      } while (_stepSize > 0);
+    }
+    return;
   }
 
   @override

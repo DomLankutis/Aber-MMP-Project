@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/array_element.dart';
 
@@ -17,10 +16,11 @@ abstract class SearchClass {
 
   static int calculateMaximumSize(double pixelSize, double gapSize) {
     int _screenWidth =
-        MediaQueryData.fromWindow(WidgetsBinding.instance!.window)
-            .size
-            .width
-            .toInt();
+    MediaQueryData
+        .fromWindow(WidgetsBinding.instance!.window)
+        .size
+        .width
+        .toInt();
 
     int maxSize = (_screenWidth / pixelSize).floor();
     return ((_screenWidth - gapSize * maxSize) / pixelSize).floor();
@@ -33,30 +33,19 @@ abstract class SearchClass {
   late int searchFor;
   late List<ArrayElement> arr;
 
-  int _iterationCount = 0;
-  List<FlSpot> plotData = List.generate(0, (index) => FlSpot.nullSpot);
-
-  late DateTime _currentTime;
-  DateTime _lastTime = DateTime.now();
-  Duration _deltaTime = Duration.zero;
+  int fastIterationCount = 0;
 
   SearchClass(this.arraySize, this.searchFor, this.paint, this.offset) {
     arr = List.generate(arraySize, (index) => ArrayElement(index, Colors.red));
     arraySize = arr.length;
   }
 
-  void calculateDeltaTime() {
-    _currentTime = DateTime.now();
-    _deltaTime += _currentTime.difference(_lastTime);
-    _lastTime = _currentTime;
-  }
-
   void iteration() {
     arr[searchFor].color = Colors.yellow;
-    calculateDeltaTime();
-    plotData.add(FlSpot(_iterationCount.toDouble(), arraySize.toDouble()));
+  }
 
-    _iterationCount++;
+  void fastRun() {
+    fastIterationCount++;
   }
 
   void renderSmallSize(Canvas canvas, Size size) {
@@ -67,7 +56,8 @@ abstract class SearchClass {
         text: TextSpan(text: item.value.toString()),
         textAlign: TextAlign.justify,
         textDirection: TextDirection.ltr,
-      )..layout(maxWidth: size.width);
+      )
+        ..layout(maxWidth: size.width);
 
       var i = item.value;
       var gap = smallGap;

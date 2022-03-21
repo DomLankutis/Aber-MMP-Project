@@ -55,7 +55,9 @@ Widget customPainterBuilder(BuildContext context, int arrSize, int searchFor,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          LiveChart(plotData: search.plotData),
+          LiveChart(
+            search: search,
+          ),
           CustomPaint(
             painter: CustomCanvas(search),
           )
@@ -98,20 +100,26 @@ class _PainterBuilderState extends State<PainterBuilder>
     ]).animate(_animationController)
       ..addListener(() => setState(() {}));
 
+    search = getSearchAlgorithm();
+
+    _timer = Timer.periodic(updateInterval, (timer) => {_onTick()});
+  }
+
+  SearchClass getSearchAlgorithm() {
+    SearchClass _search;
     switch (searchAlgorithm) {
       case SearchAlgorithm.linear:
-        search = LinearSearch(arrSize, searchFor, offset);
+        _search = LinearSearch(arrSize, searchFor, offset);
         break;
       case SearchAlgorithm.binary:
-        search = BinarySearch(0, arrSize - 1, arrSize, searchFor, offset);
+        _search = BinarySearch(0, arrSize - 1, arrSize, searchFor, offset);
         break;
       case SearchAlgorithm.fixed:
-        search = FixedStepSearch(
+        _search = FixedStepSearch(
             arrSize, searchFor, offset, sqrt(arrSize).round().abs());
         break;
     }
-
-    _timer = Timer.periodic(updateInterval, (timer) => {_onTick()});
+    return _search;
   }
 
   void _onTick() {

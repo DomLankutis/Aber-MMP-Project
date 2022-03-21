@@ -20,6 +20,15 @@ class LinearSearch extends SearchClass {
   }
 
   @override
+  void fastRun() {
+    for (var e in arr) {
+      if (e.value == searchFor) {
+        return;
+      }
+    }
+  }
+
+  @override
   void iteration() {
     arr[lookingAt].color = Colors.blue;
 
