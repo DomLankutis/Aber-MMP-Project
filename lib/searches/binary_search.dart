@@ -46,16 +46,36 @@ class BinarySearch extends SearchClass {
   }
 
   @override
+  void printDetails(Canvas canvas) {
+    textPainter.text = TextSpan(
+        text: "Iteration: $iterationCount\n"
+            "First: $first\nMiddle: $middle\nLast: $last\n"
+            "\nCode: $codeAt");
+    super.printDetails(canvas);
+  }
+
+  @override
   void iteration() {
+    codeAt = "\nif (first <= last) {";
+
     if (first <= last) {
+      codeAt += "\n\tif (arr[middle].value < searchFor) {";
+
       if (arr[middle].value < searchFor) {
+        codeAt += "\n\t\tfirst = middle + 1; \n}"
+            " else if (arr[middle].value == searchFor) {";
+
         first = middle + 1;
       } else if (arr[middle].value == searchFor) {
+        codeAt += "\n\t\treturn \n}";
+        super.iteration();
         return;
       } else {
+        codeAt += "\n} else {\n\tlast = middle - 1;\n}";
         last = middle - 1;
       }
 
+      codeAt += "\nmiddle = ((first + last) / 2).floor();";
       middle = getMiddle();
 
       arr[first].color = Colors.green;
@@ -88,16 +108,31 @@ class BinarySearch extends SearchClass {
 
   @override
   void fastRun() {
-    if (_fastLast >= _fastFirst) {
+    _fastFirst = 0;
+    _fastLast = fastArr.length;
+    while (_fastFirst <= _fastLast) {
+      fastOperationCount++; // <= Compare
       _fastMiddle = ((_fastFirst + _fastLast) / 2).floor();
-      if (fastSearchFor == fastArr[_fastMiddle]) {
+      fastOperationCount++; // Assign _fastMiddle
+      fastOperationCount++; // Add first and last
+      fastOperationCount++; // Divide by 2
+      fastOperationCount++; // floor
+
+      fastOperationCount++; // == Comparison
+      if (fastArr[_fastMiddle] == fastSearchFor) {
         return;
-      } else if (fastSearchFor > fastArr[_fastMiddle]) {
-        _fastFirst = _fastMiddle + 1;
-        fastRun();
-      } else {
+      } else if (fastArr[_fastMiddle] > fastSearchFor) {
+        fastOperationCount++; // > Comparison
+        fastOperationCount++; // Assign last
+        fastOperationCount++; // sub middle
+
         _fastLast = _fastMiddle - 1;
-        fastRun();
+      } else {
+        fastOperationCount++; // > Comparison
+
+        fastOperationCount++; // Assign first
+        fastOperationCount++; // add middle
+        _fastFirst = _fastMiddle + 1;
       }
     }
   }

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/searches/search_class.dart';
 
 //TODO: Make chart update while modal is on. Perhaps use a callback function to notify widget update
+// TODO: do  all searches
+
 class LiveChart extends StatelessWidget {
   final SearchClass search;
 
@@ -12,12 +14,10 @@ class LiveChart extends StatelessWidget {
   List<FlSpot> calculatePlotData() {
     List<FlSpot> data = List<FlSpot>.empty(growable: true);
     for (int i = 1; i < 5000000; i += 100000) {
+      search.resetFastIterCount();
       search.updateArray(i);
-      final stopwatch = Stopwatch()..start();
       search.fastRun();
-      stopwatch.stop();
-      var timeTaken = stopwatch.elapsed.inMicroseconds;
-      data.add(FlSpot(i.toDouble(), timeTaken.toDouble()));
+      data.add(FlSpot(i.toDouble(), search.fastOperationCount.toDouble()));
     }
     return data;
   }

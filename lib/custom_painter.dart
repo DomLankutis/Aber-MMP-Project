@@ -13,11 +13,11 @@ import 'package:search_algorithm_visualiser/searches/search_class.dart';
 const Duration updateInterval = Duration(milliseconds: 500);
 const Duration animationDuration = Duration(seconds: 1);
 
-// TODO: List more information as text, Iteration count, variables and their states
-
-// TODO: Show code of search and highlight which section we are currently running.
+// TODO: Live option to change animation speed [Animation Duration Slider in custom Painter]
 
 // TODO: Try and implement the siv idea
+
+// TODO: Add zoom
 
 class PainterBuilder extends StatefulWidget {
   final Widget Function(BuildContext context, SearchClass searchClass) builder;
@@ -178,6 +178,8 @@ class CustomCanvas extends CustomPainter {
     } else {
       search.renderLargeSize(canvas, size);
     }
+
+    search.printDetails(canvas);
   }
 
   @override

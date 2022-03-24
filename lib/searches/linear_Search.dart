@@ -18,7 +18,14 @@ class LinearSearch extends SearchClass {
 
   @override
   void fastRun() {
-    for (int i = 0; i < fastArr.length; i++) {
+    int i = 0;
+    fastOperationCount++; // declare i
+
+    for (; i < fastArr.length; i++) {
+      fastOperationCount++; // < comparison
+      fastOperationCount++; // i iteration (?) / add 1
+      fastOperationCount++; // == comparison
+
       if (fastArr[i] == fastSearchFor) {
         return;
       }
@@ -29,10 +36,23 @@ class LinearSearch extends SearchClass {
   void iteration() {
     arr[lookingAt].color = Colors.blue;
 
+    codeAt = "found";
+
     if (arr[lookingAt].value != searchFor) {
       lookingAt++;
+      codeAt = "if (arr[lookingAt].value != searchFor)";
     }
 
     super.iteration();
+  }
+
+  @override
+  void printDetails(Canvas canvas) {
+    textPainter.text = TextSpan(
+        text: "Iteration: $iterationCount\n"
+            "Looking at: $lookingAt\n"
+            "Code: $codeAt");
+
+    super.printDetails(canvas);
   }
 }
