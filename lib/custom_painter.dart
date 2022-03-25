@@ -3,12 +3,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:search_algorithm_visualiser/home_page.dart';
 import 'package:search_algorithm_visualiser/live_chart.dart';
 import 'package:search_algorithm_visualiser/searches/binary_search.dart';
 import 'package:search_algorithm_visualiser/searches/fixed_step_search.dart';
 import 'package:search_algorithm_visualiser/searches/linear_Search.dart';
 import 'package:search_algorithm_visualiser/searches/search_class.dart';
+import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
 
 const Duration updateInterval = Duration(milliseconds: 500);
 const Duration animationDuration = Duration(seconds: 1);
