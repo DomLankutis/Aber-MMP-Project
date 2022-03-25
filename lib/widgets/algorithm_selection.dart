@@ -28,18 +28,16 @@ class AlgorithmSelectionState extends State<AlgorithmSelection> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          const Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
-            child: Text("Select Algorithm"),
-          ),
-          Expanded(
-            child: Align(
-              alignment: const AlignmentDirectional(0, 0),
-              child: Padding(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              const Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                child: Text("Select Algorithm"),
+              ),
+              Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -91,15 +89,11 @@ class AlgorithmSelectionState extends State<AlgorithmSelection> {
                   ),
                 ),
               ),
-            ),
+              HelpWidget(
+                algorithm: _searchAlgorithm,
+              ),
+            ],
           ),
-          SingleChildScrollView(
-            child: HelpWidget(
-              algorithm: _searchAlgorithm,
-            ),
-          )
-        ],
-      ),
-    );
+        ));
   }
 }

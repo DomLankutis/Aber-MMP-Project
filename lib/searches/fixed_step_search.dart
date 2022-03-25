@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/searches/search_class.dart';
 
-// TODO: StepSize as parameter in gui
 class FixedStepSearch extends SearchClass {
   int position = 0;
   int stepSize;
