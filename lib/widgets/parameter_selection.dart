@@ -8,14 +8,16 @@ class ParameterSelection extends StatefulWidget {
   final double maximumArraySize;
   final Function(String? val) radioSetCallback;
   final Function(double? val) sliderSetCallback;
+  final TextEditingController Function() getEditingController;
 
-  const ParameterSelection({
-    Key? key,
-    required this.algorithm,
-    required this.maximumArraySize,
-    required this.radioSetCallback,
-    required this.sliderSetCallback,
-  }) : super(key: key);
+  const ParameterSelection(
+      {Key? key,
+      required this.algorithm,
+      required this.maximumArraySize,
+      required this.radioSetCallback,
+      required this.sliderSetCallback,
+      required this.getEditingController})
+      : super(key: key);
 
   @override
   _ParameterSelectionState createState() => _ParameterSelectionState();
@@ -83,7 +85,9 @@ class _ParameterSelectionState extends State<ParameterSelection> {
           ),
           Padding(
             padding: const EdgeInsets.all(5),
-            child: FixedStepParameterField(algorithm: widget.algorithm),
+            child: FixedStepParameterField(
+                algorithm: widget.algorithm,
+                getEditingController: widget.getEditingController),
           ),
           Padding(
             padding: const EdgeInsetsDirectional.all(5),

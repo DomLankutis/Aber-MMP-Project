@@ -18,6 +18,8 @@ class _HomePageState extends State<HomePage> {
   double _arraySizeSlider = 0;
   SearchAlgorithm? _algorithm = SearchAlgorithm.linear;
   String? _elementToSearchFor;
+  TextEditingController _textEditingController = TextEditingController()
+    ..clear();
 
   late int _maximumArraySize;
 
@@ -31,6 +33,10 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _arraySizeSlider = val!;
     });
+  }
+
+  TextEditingController getController() {
+    return _textEditingController;
   }
 
   @override
@@ -75,6 +81,16 @@ class _HomePageState extends State<HomePage> {
       int arrSize = _arraySizeSlider.toInt();
       int searchFor = 0;
 
+      int fixedStep = 0;
+      if (_algorithm == SearchAlgorithm.fixed) {
+        if (_textEditingController.value.text.isNotEmpty) {
+          fixedStep = int.parse(_textEditingController.value.text);
+        } else {
+          showErrorDialog(context);
+          return;
+        }
+      }
+
       switch (_elementToSearchFor) {
         case "first":
           searchFor = 0;
@@ -93,8 +109,13 @@ class _HomePageState extends State<HomePage> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                customPainterBuilder(context, arrSize, searchFor, algorithm),
+            builder: (context) => customPainterBuilder(
+              context,
+              arrSize,
+              searchFor,
+              algorithm,
+              fixedStep,
+            ),
           ));
     } else {
       showErrorDialog(context);
@@ -152,6 +173,7 @@ class _HomePageState extends State<HomePage> {
                         maximumArraySize: _maximumArraySize.toDouble(),
                         radioSetCallback: parameterRadioListChanged,
                         sliderSetCallback: sliderParameterChanged,
+                        getEditingController: getController,
                       ),
                     ),
                   ),

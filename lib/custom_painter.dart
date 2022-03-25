@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +24,7 @@ class PainterBuilder extends StatefulWidget {
   final int arrSize;
   final int searchFor;
   final SearchAlgorithm searchAlgorithm;
+  final int fixedStep;
 
   const PainterBuilder({
     Key? key,
@@ -32,15 +32,15 @@ class PainterBuilder extends StatefulWidget {
     required this.arrSize,
     required this.searchFor,
     required this.searchAlgorithm,
+    required this.fixedStep,
   }) : super(key: key);
 
   @override
-  _PainterBuilderState createState() =>
-      _PainterBuilderState(arrSize, searchFor, searchAlgorithm);
+  _PainterBuilderState createState() => _PainterBuilderState();
 }
 
 Widget customPainterBuilder(BuildContext context, int arrSize, int searchFor,
-    SearchAlgorithm algorithm) {
+    SearchAlgorithm algorithm, int fixedStep) {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
@@ -50,6 +50,7 @@ Widget customPainterBuilder(BuildContext context, int arrSize, int searchFor,
     arrSize: arrSize,
     searchFor: searchFor,
     searchAlgorithm: algorithm,
+    fixedStep: fixedStep,
     builder: (context, search) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,11 +70,7 @@ Widget customPainterBuilder(BuildContext context, int arrSize, int searchFor,
 
 class _PainterBuilderState extends State<PainterBuilder>
     with TickerProviderStateMixin {
-  int arrSize;
-  int searchFor;
-  SearchAlgorithm searchAlgorithm;
-
-  _PainterBuilderState(this.arrSize, this.searchFor, this.searchAlgorithm);
+  _PainterBuilderState();
 
   late final Timer _timer;
   late SearchClass search;
@@ -107,16 +104,17 @@ class _PainterBuilderState extends State<PainterBuilder>
 
   SearchClass getSearchAlgorithm() {
     SearchClass _search;
-    switch (searchAlgorithm) {
+    switch (widget.searchAlgorithm) {
       case SearchAlgorithm.linear:
-        _search = LinearSearch(arrSize, searchFor, offset);
+        _search = LinearSearch(widget.arrSize, widget.searchFor, offset);
         break;
       case SearchAlgorithm.binary:
-        _search = BinarySearch(0, arrSize - 1, arrSize, searchFor, offset);
+        _search = BinarySearch(
+            0, widget.arrSize - 1, widget.arrSize, widget.searchFor, offset);
         break;
       case SearchAlgorithm.fixed:
         _search = FixedStepSearch(
-            arrSize, searchFor, offset, sqrt(arrSize).round().abs());
+            widget.arrSize, widget.searchFor, offset, widget.fixedStep);
         break;
     }
     return _search;
