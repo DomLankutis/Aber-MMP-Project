@@ -123,7 +123,7 @@ class _PainterBuilderState extends State<PainterBuilder>
   void _onTick() {
     if (canRun) {
       for (var element in search.arr) {
-        element.color = Colors.red;
+        element.color = Colors.blue;
       }
 
       search.iteration();

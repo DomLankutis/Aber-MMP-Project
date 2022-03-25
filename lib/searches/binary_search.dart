@@ -56,6 +56,7 @@ class BinarySearch extends SearchClass {
 
   @override
   void iteration() {
+    super.iteration();
     codeAt = "\nif (first <= last) {";
 
     if (first <= last) {
@@ -80,14 +81,12 @@ class BinarySearch extends SearchClass {
 
       arr[first].color = Colors.green;
       arr[last].color = Colors.green;
-      arr[middle].color = Colors.blue;
+      arr[middle].color = Colors.yellow;
     }
 
     if (first > last) {
       return;
     }
-
-    super.iteration();
   }
 
   @override

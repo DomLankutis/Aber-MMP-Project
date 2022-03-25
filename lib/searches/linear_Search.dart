@@ -34,7 +34,8 @@ class LinearSearch extends SearchClass {
 
   @override
   void iteration() {
-    arr[lookingAt].color = Colors.blue;
+    super.iteration();
+    arr[lookingAt].color = Colors.yellow;
 
     codeAt = "found";
 
@@ -42,8 +43,6 @@ class LinearSearch extends SearchClass {
       lookingAt++;
       codeAt = "if (arr[lookingAt].value != searchFor)";
     }
-
-    super.iteration();
   }
 
   @override

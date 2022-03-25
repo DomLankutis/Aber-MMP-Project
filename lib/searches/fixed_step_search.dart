@@ -83,7 +83,7 @@ class FixedStepSearch extends SearchClass {
           "\n\tposition += stepSize;\n}";
 
       position += stepSize;
-      arr[position].color = Colors.blue;
+      arr[position].color = Colors.yellow;
       _whileLoopConditionMet =
           (position < arraySize) && (arr[position].value < searchFor);
       return;
@@ -98,7 +98,7 @@ class FixedStepSearch extends SearchClass {
             "\n\t\tstepSize--;";
         position--;
         stepSize--;
-        arr[position].color = Colors.blue;
+        arr[position].color = Colors.yellow;
         if ((position < arraySize) && (arr[position].value == searchFor)) {
           codeAt +=
               "\n\t\tif ((position < arraySize) && (arr[position].value == searchFor)) {"

@@ -3,12 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/array_element.dart';
 
-// TODO: Count operations instead of time [Complete waiting on reply]
-
 // TODO: Add IncreasedFixedStepSize
 // TODO: add finished bool to stop iteration count;
-
-// TODO: Change colours
 
 abstract class SearchClass {
   static const double smallCanvasPixelSize = 20;
@@ -22,9 +18,9 @@ abstract class SearchClass {
   static const double maxAnimationHeight = 10;
 
   static final Map<Color, String> baseExplanations = {
-    Colors.red: "Default colour, has no meaning",
-    Colors.yellow: "Element which we are searching for",
-    Colors.blue: "Element which the array is comparing",
+    Colors.blue: "Default colour, has no meaning",
+    Colors.red: "Element which we are searching for",
+    Colors.yellow: "Element which the array is comparing",
   };
 
   static int calculateMaximumSize(double pixelSize, double gapSize) {
@@ -53,7 +49,7 @@ abstract class SearchClass {
   String codeAt = "";
 
   SearchClass(this.arraySize, this.searchFor, this.paint, this.offset) {
-    arr = List.generate(arraySize, (index) => ArrayElement(index, Colors.red));
+    arr = List.generate(arraySize, (index) => ArrayElement(index, Colors.blue));
     textPainter = TextPainter(
       text: TextSpan(text: "TEST"),
       textAlign: TextAlign.justify,
@@ -70,7 +66,7 @@ abstract class SearchClass {
   }
 
   void iteration() {
-    arr[searchFor].color = Colors.yellow;
+    arr[searchFor].color = Colors.red;
     iterationCount++;
   }
 
@@ -98,7 +94,7 @@ abstract class SearchClass {
       var gap = smallGap;
       var _size = const Size(smallCanvasPixelSize, smallCanvasPixelSize);
       var pos = Offset(gap * i + (i * _size.width),
-          50.0 + (item.color == Colors.blue ? offset!.value : 0));
+          50.0 + (item.color == Colors.yellow ? offset!.value : 0));
 
       canvas.drawRect(pos & _size, paint);
       textPainter.paint(canvas, pos + const Offset(2.5, 0));
@@ -113,7 +109,7 @@ abstract class SearchClass {
       var gap = mediumGap;
       var _size = const Size(mediumCanvasPixelSize, mediumCanvasPixelSize);
       var pos = Offset(gap * i + (i * _size.width),
-          50 + (item.color == Colors.blue ? offset!.value : 0));
+          50 + (item.color == Colors.yellow ? offset!.value : 0));
 
       canvas.drawRect(pos & _size, paint);
     }
@@ -129,7 +125,7 @@ abstract class SearchClass {
       var gap = largeGap;
       var _size = const Size(largeCanvasPixelSize, largeCanvasPixelSize);
       var pos = Offset(gap * i + (i * _size.width),
-          50.0 + (item.color == Colors.blue ? offset!.value : 0));
+          50.0 + (item.color == Colors.yellow ? offset!.value : 0));
 
       canvas.drawRect(pos & _size, paint);
     }
