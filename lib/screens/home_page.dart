@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:search_algorithm_visualiser/custom_painter.dart';
+import 'package:search_algorithm_visualiser/screens/details_screen.dart';
 import 'package:search_algorithm_visualiser/searches/search_class.dart';
 import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
 import 'package:search_algorithm_visualiser/widgets/parameter_selection.dart';
@@ -106,15 +106,26 @@ class _HomePageState extends State<HomePage> {
           break;
       }
 
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => customPainterBuilder(
+      //         context,
+      //         arrSize,
+      //         searchFor,
+      //         algorithm,
+      //         fixedStep,
+      //       ),
+      //     ));
+
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => customPainterBuilder(
-              context,
-              arrSize,
-              searchFor,
-              algorithm,
-              fixedStep,
+            builder: (context) => DetailsScreen(
+              arrSize: arrSize,
+              fixedStep: fixedStep,
+              searchFor: searchFor,
+              algorithm: algorithm,
             ),
           ));
     } else {

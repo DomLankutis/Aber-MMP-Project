@@ -46,12 +46,12 @@ class LinearSearch extends SearchClass {
   }
 
   @override
-  void printDetails(Canvas canvas) {
-    textPainter.text = TextSpan(
-        text: "Iteration: $iterationCount\n"
-            "Looking at: $lookingAt\n"
-            "Code: $codeAt");
+  Map<String, int> getVariableStates() {
+    return {"Iteration": iterationCount, "Looking at": lookingAt};
+  }
 
-    super.printDetails(canvas);
+  @override
+  String getCodeScope() {
+    return codeAt;
   }
 }

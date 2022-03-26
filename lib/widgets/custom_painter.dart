@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:search_algorithm_visualiser/live_chart.dart';
 import 'package:search_algorithm_visualiser/searches/binary_search.dart';
 import 'package:search_algorithm_visualiser/searches/fixed_step_search.dart';
 import 'package:search_algorithm_visualiser/searches/linear_Search.dart';
@@ -25,14 +24,18 @@ class PainterBuilder extends StatefulWidget {
   final int searchFor;
   final SearchAlgorithm searchAlgorithm;
   final int fixedStep;
+  final Function? notifyParent;
 
-  const PainterBuilder({
+  Function? getSearch;
+
+  PainterBuilder({
     Key? key,
     required this.builder,
     required this.arrSize,
     required this.searchFor,
     required this.searchAlgorithm,
     required this.fixedStep,
+    this.notifyParent,
   }) : super(key: key);
 
   @override
@@ -40,7 +43,7 @@ class PainterBuilder extends StatefulWidget {
 }
 
 Widget customPainterBuilder(BuildContext context, int arrSize, int searchFor,
-    SearchAlgorithm algorithm, int fixedStep) {
+    SearchAlgorithm algorithm, int fixedStep, Function? function) {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
@@ -51,18 +54,10 @@ Widget customPainterBuilder(BuildContext context, int arrSize, int searchFor,
     searchFor: searchFor,
     searchAlgorithm: algorithm,
     fixedStep: fixedStep,
+    notifyParent: function,
     builder: (context, search) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          LiveChart(
-            search: search,
-          ),
-          CustomPaint(
-            painter: CustomCanvas(search),
-          )
-        ],
+      return CustomPaint(
+        painter: CustomCanvas(search),
       );
     },
   );
@@ -99,6 +94,10 @@ class _PainterBuilderState extends State<PainterBuilder>
 
     search = getSearchAlgorithm();
 
+    widget.getSearch = () {
+      return search;
+    };
+
     _timer = Timer.periodic(updateInterval, (timer) => {_onTick()});
   }
 
@@ -130,6 +129,7 @@ class _PainterBuilderState extends State<PainterBuilder>
 
       _animationController.reset();
       _animationController.forward();
+      widget.notifyParent!();
       setState(() {});
     }
 
@@ -176,8 +176,6 @@ class CustomCanvas extends CustomPainter {
     } else {
       search.renderLargeSize(canvas, size);
     }
-
-    search.printDetails(canvas);
   }
 
   @override

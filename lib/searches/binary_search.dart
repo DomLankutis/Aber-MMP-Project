@@ -46,12 +46,18 @@ class BinarySearch extends SearchClass {
   }
 
   @override
-  void printDetails(Canvas canvas) {
-    textPainter.text = TextSpan(
-        text: "Iteration: $iterationCount\n"
-            "First: $first\nMiddle: $middle\nLast: $last\n"
-            "\nCode: $codeAt");
-    super.printDetails(canvas);
+  Map<String, int> getVariableStates() {
+    return {
+      "Iteration": iterationCount,
+      "First": first,
+      "Middle": middle,
+      "Last": last
+    };
+  }
+
+  @override
+  String getCodeScope() {
+    return codeAt;
   }
 
   @override

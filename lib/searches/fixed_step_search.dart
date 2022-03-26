@@ -113,11 +113,16 @@ class FixedStepSearch extends SearchClass {
   }
 
   @override
-  void printDetails(Canvas canvas) {
-    textPainter.text = TextSpan(
-        text: "Iteration: $iterationCount\n"
-            "Position: $position\nStepSize: $stepSize\n"
-            "\nCode: $codeAt");
-    super.printDetails(canvas);
+  Map<String, int> getVariableStates() {
+    return {
+      "Iteration": iterationCount,
+      "Position": position,
+      "StepSize": stepSize
+    };
+  }
+
+  @override
+  String getCodeScope() {
+    return codeAt;
   }
 }

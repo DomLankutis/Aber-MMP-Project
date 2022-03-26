@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:search_algorithm_visualiser/array_element.dart';
+import 'package:search_algorithm_visualiser/misc/array_element.dart';
 
 // TODO: Add IncreasedFixedStepSize
 // TODO: add finished bool to stop iteration count;
@@ -25,10 +25,10 @@ abstract class SearchClass {
 
   static int calculateMaximumSize(double pixelSize, double gapSize) {
     int _screenWidth =
-        (window.physicalSize / window.devicePixelRatio).width.toInt();
+        ((window.physicalSize / window.devicePixelRatio).width * 0.9).toInt();
 
     int maxSize = (_screenWidth / pixelSize).floor();
-    return ((_screenWidth - gapSize * (maxSize - 1)) / pixelSize).floor();
+    return ((_screenWidth - gapSize * maxSize) / pixelSize).floor();
   }
 
   final Offset detailsOffset = Offset(100, 100);
@@ -51,7 +51,7 @@ abstract class SearchClass {
   SearchClass(this.arraySize, this.searchFor, this.paint, this.offset) {
     arr = List.generate(arraySize, (index) => ArrayElement(index, Colors.blue));
     textPainter = TextPainter(
-      text: TextSpan(text: "TEST"),
+      text: const TextSpan(text: ""),
       textAlign: TextAlign.justify,
       textDirection: TextDirection.ltr,
     )..layout(maxWidth: (window.physicalSize / window.devicePixelRatio).width);
@@ -76,11 +76,9 @@ abstract class SearchClass {
     fastOperationCount = 0;
   }
 
-  void printDetails(Canvas canvas) {
-    textPainter.layout(
-        maxWidth: (window.physicalSize / window.devicePixelRatio).width);
-    textPainter.paint(canvas, detailsOffset);
-  }
+  Map<String, int> getVariableStates();
+
+  String getCodeScope();
 
   void renderSmallSize(Canvas canvas, Size size) {
     for (var item in arr) {
