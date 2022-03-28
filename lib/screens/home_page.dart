@@ -121,12 +121,13 @@ class _HomePageState extends State<HomePage> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailsScreen(
-              arrSize: arrSize,
-              fixedStep: fixedStep,
-              searchFor: searchFor,
-              algorithm: algorithm,
-            ),
+            builder: (context) =>
+                DetailsScreen(
+                  arrSize: arrSize,
+                  fixedStep: fixedStep,
+                  searchFor: searchFor,
+                  algorithm: algorithm,
+                ),
           ));
     } else {
       showErrorDialog(context);
@@ -139,7 +140,8 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  //TODO: Add marking for each canvas rendering boundary
+  //TODO: Canvas rendering tries to fit the biggest blocks possible.
+  // Have a maximum size for small definition which still fits text
 
   @override
   Widget build(BuildContext context) {
@@ -167,8 +169,14 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                     child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      height: MediaQuery.of(context).size.height * 0.85,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.45,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.85,
                       child: AlgorithmSelection(
                         setCallback: algorithmRadioListChanged,
                       ),
@@ -177,8 +185,14 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                     child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      height: MediaQuery.of(context).size.height * 0.85,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.45,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.85,
                       child: ParameterSelection(
                         algorithm: _algorithm!,
                         maximumArraySize: _maximumArraySize.toDouble(),

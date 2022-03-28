@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/searches/search_class.dart';
+import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
 
 class BinarySearch extends SearchClass {
   int first;
@@ -12,16 +13,13 @@ class BinarySearch extends SearchClass {
 
   BinarySearch(this.first, this.last, int arrSize, int searchFor,
       Animation<double>? offset)
-      : super(
-          arrSize,
-          searchFor,
-          Paint(),
-          offset,
-        ) {
+      : super(arrSize, searchFor, Paint(), offset) {
     middle = getMiddle();
     _fastFirst = first;
     _fastLast = last;
     _fastMiddle = middle;
+
+    identifier = SearchAlgorithm.binary;
   }
 
   @override

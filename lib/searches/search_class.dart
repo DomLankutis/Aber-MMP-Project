@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/misc/array_element.dart';
+import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
 
 // TODO: Add IncreasedFixedStepSize
 // TODO: add finished bool to stop iteration count;
@@ -25,7 +26,7 @@ abstract class SearchClass {
 
   static int calculateMaximumSize(double pixelSize, double gapSize) {
     int _screenWidth =
-        ((window.physicalSize / window.devicePixelRatio).width * 0.9).toInt();
+    ((window.physicalSize / window.devicePixelRatio).width * 0.9).toInt();
 
     int maxSize = (_screenWidth / pixelSize).floor();
     return ((_screenWidth - gapSize * maxSize) / pixelSize).floor();
@@ -44,6 +45,8 @@ abstract class SearchClass {
   late List<int> fastArr;
   late int fastSearchFor;
 
+  late SearchAlgorithm identifier;
+
   int iterationCount = 0;
   int fastOperationCount = 0;
   String codeAt = "";
@@ -54,7 +57,8 @@ abstract class SearchClass {
       text: const TextSpan(text: ""),
       textAlign: TextAlign.justify,
       textDirection: TextDirection.ltr,
-    )..layout(maxWidth: (window.physicalSize / window.devicePixelRatio).width);
+    )
+      ..layout(maxWidth: (window.physicalSize / window.devicePixelRatio).width);
   }
 
   /*

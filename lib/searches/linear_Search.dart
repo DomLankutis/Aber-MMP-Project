@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/searches/search_class.dart';
+import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
 
 class LinearSearch extends SearchClass {
   int lookingAt = 0;
 
   LinearSearch(int arrSize, int searchFor, Animation<double>? offset)
-      : super(
-          arrSize,
-          searchFor,
-          Paint(),
-          offset,
-        );
+      : super(arrSize, searchFor, Paint(), offset) {
+    identifier = SearchAlgorithm.linear;
+  }
 
   static Map<Color, String> getColorExplanations() {
     return SearchClass.baseExplanations;

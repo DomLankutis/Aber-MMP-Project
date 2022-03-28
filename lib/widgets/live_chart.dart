@@ -1,53 +1,127 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:search_algorithm_visualiser/misc/helper.dart';
+import 'package:search_algorithm_visualiser/searches/binary_search.dart';
+import 'package:search_algorithm_visualiser/searches/fixed_step_search.dart';
+import 'package:search_algorithm_visualiser/searches/linear_Search.dart';
 import 'package:search_algorithm_visualiser/searches/search_class.dart';
+import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
 
-//TODO: Make chart update while modal is on. Perhaps use a callback function to notify widget update
-// TODO: do  all searches
+class LiveChart extends StatefulWidget {
+  final int arraySize;
+  final int searchFor;
+  final int fixedStep;
 
-class LiveChart extends StatelessWidget {
-  final SearchClass search;
+  final Map<SearchAlgorithm, bool> enabledSearches;
 
-  const LiveChart({Key? key, required this.search}) : super(key: key);
+  const LiveChart({
+    Key? key,
+    required this.arraySize,
+    required this.searchFor,
+    required this.fixedStep,
+    required this.enabledSearches,
+  }) : super(key: key);
 
-  // Run this with a set state or something and it should update as it runs
-  List<FlSpot> calculatePlotData() {
-    List<FlSpot> data = List<FlSpot>.empty(growable: true);
-    for (int i = 1; i < 5000000; i += 100000) {
+  @override
+  _LiveChartState createState() => _LiveChartState();
+}
+
+class _LiveChartState extends State<LiveChart> {
+  late Timer timer;
+
+  List<LineChartBarData> data = List<LineChartBarData>.empty(growable: true);
+  List<SearchClass> searches = List.empty(growable: true);
+  int arraySize = 0;
+
+  void calculatePlotData() {
+    arraySize += 10000;
+    for (var i = 0; i < searches.length; i++) {
+      SearchClass search = searches[i];
+
       search.resetFastIterCount();
-      search.updateArray(i);
+      search.updateArray(arraySize);
       search.fastRun();
-      data.add(FlSpot(i.toDouble(), search.fastOperationCount.toDouble()));
+
+      data[i] = LineChartBarData(
+        isCurved: true,
+        preventCurveOverShooting: true,
+        dotData: FlDotData(show: false),
+        colors: [lineColor[search.identifier]!],
+        spots: [
+          ...data[i].spots,
+          FlSpot(arraySize.toDouble(), search.fastOperationCount.toDouble())
+        ],
+      );
     }
-    return data;
+    setState(() {});
+  }
+
+  void generateSearches() {
+    if (widget.enabledSearches[SearchAlgorithm.linear]!) {
+      searches.add(LinearSearch(widget.arraySize, widget.searchFor, null));
+    }
+
+    if (widget.enabledSearches[SearchAlgorithm.binary]!) {
+      searches.add(BinarySearch(
+          0, widget.arraySize - 1, widget.arraySize, widget.searchFor, null));
+    }
+
+    if (widget.enabledSearches[SearchAlgorithm.fixed]!) {
+      searches.add(FixedStepSearch(
+          widget.arraySize,
+          widget.searchFor,
+          null,
+          widget.fixedStep == 0
+              ? sqrt(widget.arraySize).abs().toInt()
+              : widget.fixedStep));
+    }
+  }
+
+  void initBarData() {
+    for (var i = 0; i < searches.length; i++) {
+      data.add(LineChartBarData());
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    generateSearches();
+    initBarData();
+
+    timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      calculatePlotData();
+    });
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant LiveChart oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    arraySize = 0;
+    searches.clear();
+    data.clear();
+
+    generateSearches();
+    initBarData();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      child: const Text("Live Chart"),
-      onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: LineChart(
-                LineChartData(
-                  lineBarsData: [
-                    LineChartBarData(
-                      isCurved: true,
-                      isStrokeCapRound: true,
-                      dotData: FlDotData(show: false),
-                      spots: calculatePlotData(),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
+    return LineChart(
+      LineChartData(
+        lineBarsData: data,
+      ),
     );
   }
 }

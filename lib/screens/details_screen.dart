@@ -41,7 +41,11 @@ class _DetailsScreenState extends State<DetailsScreen>
       );
     } else {
       // Live Chart
-      return ChartScreen();
+      return ChartScreen(
+        arraySize: widget.arrSize,
+        searchFor: widget.searchFor,
+        fixedStep: widget.fixedStep,
+      );
     }
   }
 
