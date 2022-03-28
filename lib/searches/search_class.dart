@@ -8,15 +8,9 @@ import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
 // TODO: add finished bool to stop iteration count;
 
 abstract class SearchClass {
-  static const double smallCanvasPixelSize = 20;
-  static const double mediumCanvasPixelSize = 5;
-  static const double largeCanvasPixelSize = 1;
-
-  static const double smallGap = 1;
-  static const double mediumGap = 0.5;
-  static const double largeGap = 0.2;
-
   static const double maxAnimationHeight = 10;
+  static const double smallestPixelSize = 2;
+  static const double gap = 1;
 
   static final Map<Color, String> baseExplanations = {
     Colors.blue: "Default colour, has no meaning",
@@ -24,15 +18,17 @@ abstract class SearchClass {
     Colors.yellow: "Element which the array is comparing",
   };
 
-  static int calculateMaximumSize(double pixelSize, double gapSize) {
-    int _screenWidth =
-    ((window.physicalSize / window.devicePixelRatio).width * 0.9).toInt();
+  static int getMaxArraySize() {
+    var _screenWidth =
+        (window.physicalSize / window.devicePixelRatio).width * 0.8;
+    var arraySize = _screenWidth / smallestPixelSize;
+    var totalGapSize = (_screenWidth / arraySize) * gap;
+    var effectiveScreenSize = _screenWidth - totalGapSize;
+    var trueArraySize = effectiveScreenSize ~/ smallestPixelSize;
 
-    int maxSize = (_screenWidth / pixelSize).floor();
-    return ((_screenWidth - gapSize * maxSize) / pixelSize).floor();
+    return trueArraySize;
   }
 
-  final Offset detailsOffset = Offset(100, 100);
   late TextPainter textPainter;
 
   late Paint paint;
@@ -53,13 +49,19 @@ abstract class SearchClass {
 
   SearchClass(this.arraySize, this.searchFor, this.paint, this.offset) {
     arr = List.generate(arraySize, (index) => ArrayElement(index, Colors.blue));
+
     textPainter = TextPainter(
       text: const TextSpan(text: ""),
       textAlign: TextAlign.justify,
       textDirection: TextDirection.ltr,
-    )
-      ..layout(maxWidth: (window.physicalSize / window.devicePixelRatio).width);
+    )..layout(maxWidth: (window.physicalSize / window.devicePixelRatio).width);
   }
+
+  void fastRun();
+
+  Map<String, int> getVariableStates();
+
+  String getCodeScope();
 
   /*
     Assumes we only run for the live chart
@@ -74,62 +76,37 @@ abstract class SearchClass {
     iterationCount++;
   }
 
-  void fastRun();
-
   void resetFastIterCount() {
     fastOperationCount = 0;
   }
 
-  Map<String, int> getVariableStates();
+  Size getPixelSize(Size canvasSize) {
+    var pixelSize = canvasSize.width / arraySize;
+    var totalGapSize = (canvasSize.width / pixelSize) * gap;
+    var effectiveScreenSize = canvasSize.width - totalGapSize;
+    var truePixelSize = effectiveScreenSize / arraySize;
 
-  String getCodeScope();
+    return Size.square(truePixelSize);
+  }
 
-  void renderSmallSize(Canvas canvas, Size size) {
+  void render(Canvas canvas, Size size) {
     for (var item in arr) {
       paint.color = item.color;
 
-      textPainter.text = TextSpan(
-          text: item.value.toString(), style: const TextStyle(fontSize: 12));
-      textPainter.layout(maxWidth: double.infinity);
-
       var i = item.value;
-      var gap = smallGap;
-      var _size = const Size(smallCanvasPixelSize, smallCanvasPixelSize);
+      var _size = getPixelSize(size);
       var pos = Offset(gap * i + (i * _size.width),
           50.0 + (item.color == Colors.yellow ? offset!.value : 0));
+
+      // ADD: if the size is greater than small
+      if (_size.width >= smallestPixelSize) {
+        textPainter.text = TextSpan(
+            text: item.value.toString(), style: const TextStyle(fontSize: 12));
+        textPainter.layout(maxWidth: double.infinity);
+      }
 
       canvas.drawRect(pos & _size, paint);
       textPainter.paint(canvas, pos + const Offset(2.5, 0));
-    }
-  }
-
-  void renderMediumSize(Canvas canvas, Size size) {
-    for (var item in arr) {
-      paint.color = item.color;
-
-      var i = item.value;
-      var gap = mediumGap;
-      var _size = const Size(mediumCanvasPixelSize, mediumCanvasPixelSize);
-      var pos = Offset(gap * i + (i * _size.width),
-          50 + (item.color == Colors.yellow ? offset!.value : 0));
-
-      canvas.drawRect(pos & _size, paint);
-    }
-  }
-
-  var oldRows = List<List<Rect>>.empty(growable: true);
-
-  void renderLargeSize(Canvas canvas, Size size) {
-    for (var item in arr) {
-      paint.color = item.color;
-
-      var i = item.value;
-      var gap = largeGap;
-      var _size = const Size(largeCanvasPixelSize, largeCanvasPixelSize);
-      var pos = Offset(gap * i + (i * _size.width),
-          50.0 + (item.color == Colors.yellow ? offset!.value : 0));
-
-      canvas.drawRect(pos & _size, paint);
     }
   }
 }

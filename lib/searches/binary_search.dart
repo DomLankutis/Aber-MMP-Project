@@ -94,16 +94,14 @@ class BinarySearch extends SearchClass {
   }
 
   @override
-  void renderLargeSize(Canvas canvas, Size size) {
+  void render(Canvas canvas, Size size) {
     for (var item in arr) {
       paint.color = item.color;
 
       var i = item.value;
-      var gap = 0.2;
-      var _size = const Size(
-          SearchClass.largeCanvasPixelSize, SearchClass.largeCanvasPixelSize);
-      var pos = Offset(gap * i + (i * _size.width),
-          50 + ((first <= i && i <= last) ? offset!.value : 0));
+      var _size = getPixelSize(size);
+      var pos = Offset(SearchClass.gap * i + (i * _size.width),
+          50 + ((item.color == Colors.yellow) ? offset!.value : 0));
 
       canvas.drawRect(pos & _size, paint);
     }

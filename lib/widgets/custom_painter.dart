@@ -25,7 +25,6 @@ class PainterBuilder extends StatefulWidget {
   final SearchAlgorithm searchAlgorithm;
   final int fixedStep;
   final Function? notifyParent;
-
   Function? getSearch;
 
   PainterBuilder({
@@ -35,15 +34,21 @@ class PainterBuilder extends StatefulWidget {
     required this.searchFor,
     required this.searchAlgorithm,
     required this.fixedStep,
-    this.notifyParent,
+    required this.notifyParent,
   }) : super(key: key);
 
   @override
   _PainterBuilderState createState() => _PainterBuilderState();
 }
 
-Widget customPainterBuilder(BuildContext context, int arrSize, int searchFor,
-    SearchAlgorithm algorithm, int fixedStep, Function? function) {
+Widget customPainterBuilder(
+  BuildContext context,
+  int arrSize,
+  int searchFor,
+  SearchAlgorithm algorithm,
+  int fixedStep,
+  Function? function,
+) {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
@@ -163,19 +168,7 @@ class CustomCanvas extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    int _maximumSmallSize = SearchClass.calculateMaximumSize(
-        SearchClass.smallCanvasPixelSize, SearchClass.smallGap);
-
-    int _maximumMediumSize = SearchClass.calculateMaximumSize(
-        SearchClass.mediumCanvasPixelSize, SearchClass.mediumGap);
-
-    if (search.arraySize <= _maximumSmallSize) {
-      search.renderSmallSize(canvas, size);
-    } else if (search.arraySize <= _maximumMediumSize) {
-      search.renderMediumSize(canvas, size);
-    } else {
-      search.renderLargeSize(canvas, size);
-    }
+    search.render(canvas, size);
   }
 
   @override
