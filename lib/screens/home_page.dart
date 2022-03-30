@@ -137,9 +137,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  //TODO: Canvas rendering tries to fit the biggest blocks possible.
-  // Have a maximum size for small definition which still fits text
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([

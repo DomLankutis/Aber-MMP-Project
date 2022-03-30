@@ -35,12 +35,12 @@ class LinearSearch extends SearchClass {
     super.iteration();
     arr[lookingAt].color = Colors.yellow;
 
-    codeAt = "found";
-
     if (arr[lookingAt].value != searchFor) {
       lookingAt++;
       codeAt = "if (arr[lookingAt].value != searchFor)";
     }
+
+    finished = true;
   }
 
   @override

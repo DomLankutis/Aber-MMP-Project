@@ -11,8 +11,8 @@ class FixedStepSearch extends SearchClass {
 
   late bool _whileLoopConditionMet;
 
-  FixedStepSearch(int arrSize, int searchFor, Animation<double>? offset,
-      this.stepSize)
+  FixedStepSearch(
+      int arrSize, int searchFor, Animation<double>? offset, this.stepSize)
       : super(arrSize, searchFor, Paint(), offset) {
     _whileLoopConditionMet =
         (position < arrSize) && (arr[position].value < searchFor);
@@ -77,7 +77,7 @@ class FixedStepSearch extends SearchClass {
 
     if (_whileLoopConditionMet) {
       codeAt =
-      "\nwhile((position < arraySize) && (arr[position].value < searchFor)) {"
+          "\nwhile((position < arraySize) && (arr[position].value < searchFor)) {"
           "\n\tposition += stepSize;\n}";
 
       position += stepSize;
@@ -89,7 +89,7 @@ class FixedStepSearch extends SearchClass {
 
     if ((position >= arraySize) || (arr[position].value > searchFor)) {
       codeAt =
-      "\nif ((position >= arraySize) || (arr[position].value > searchFor)) {";
+          "\nif ((position >= arraySize) || (arr[position].value > searchFor)) {";
       if (stepSize > 0) {
         codeAt += "\n\tif (stepSize > 0) {"
             "\n\t\tposition--;"
@@ -98,8 +98,9 @@ class FixedStepSearch extends SearchClass {
         stepSize--;
         arr[position].color = Colors.yellow;
         if ((position < arraySize) && (arr[position].value == searchFor)) {
+          finished = true;
           codeAt +=
-          "\n\t\tif ((position < arraySize) && (arr[position].value == searchFor)) {"
+              "\n\t\tif ((position < arraySize) && (arr[position].value == searchFor)) {"
               "\n\t\t\treturn; // Found item"
               "\n\t\t}\n}";
           return;

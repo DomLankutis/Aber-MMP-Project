@@ -24,6 +24,7 @@ class _ChartScreenState extends State<ChartScreen> {
     SearchAlgorithm.linear: true,
     SearchAlgorithm.binary: true,
     SearchAlgorithm.fixed: true,
+    SearchAlgorithm.increasingStep: true,
   };
 
   void toggleCallback(SearchAlgorithm searchAlgorithm) {

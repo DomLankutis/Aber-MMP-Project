@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:search_algorithm_visualiser/misc/helper.dart';
 import 'package:search_algorithm_visualiser/widgets/help_widget.dart';
 
-enum SearchAlgorithm { linear, binary, fixed }
+enum SearchAlgorithm { linear, binary, fixed, increasingStep }
 
 class AlgorithmSelection extends StatefulWidget {
   final Function(SearchAlgorithm? val) setCallback;
@@ -23,6 +24,24 @@ class AlgorithmSelectionState extends State<AlgorithmSelection> {
     setState(() {
       _searchAlgorithm = val!;
     });
+  }
+
+  List<Widget> algorithmSelection() {
+    List<Widget> radioList = List.empty(growable: true);
+
+    for (SearchAlgorithm search in SearchAlgorithm.values) {
+      radioList.add(RadioListTile<SearchAlgorithm>(
+          title: Text(getAlgorithmName(search)),
+          value: search,
+          groupValue: _searchAlgorithm,
+          onChanged: algorithmRadioListChanged,
+          visualDensity: const VisualDensity(
+            horizontal: VisualDensity.minimumDensity,
+            vertical: VisualDensity.minimumDensity,
+          )));
+    }
+
+    return radioList;
   }
 
   @override
@@ -48,42 +67,12 @@ class AlgorithmSelectionState extends State<AlgorithmSelection> {
                     child: Padding(
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RadioListTile<SearchAlgorithm>(
-                            title: const Text('Linear Search'),
-                            value: SearchAlgorithm.linear,
-                            groupValue: _searchAlgorithm,
-                            onChanged: (algorithmRadioListChanged),
-                            visualDensity: const VisualDensity(
-                              horizontal: VisualDensity.minimumDensity,
-                              vertical: VisualDensity.minimumDensity,
-                            ),
-                          ),
-                          RadioListTile<SearchAlgorithm>(
-                            title: const Text('Binary Search'),
-                            value: SearchAlgorithm.binary,
-                            groupValue: _searchAlgorithm,
-                            onChanged: (algorithmRadioListChanged),
-                            visualDensity: const VisualDensity(
-                              horizontal: VisualDensity.minimumDensity,
-                              vertical: VisualDensity.minimumDensity,
-                            ),
-                          ),
-                          RadioListTile<SearchAlgorithm>(
-                            title: const Text('Fixed Step Search'),
-                            value: SearchAlgorithm.fixed,
-                            groupValue: _searchAlgorithm,
-                            onChanged: (algorithmRadioListChanged),
-                            visualDensity: const VisualDensity(
-                              horizontal: VisualDensity.minimumDensity,
-                              vertical: VisualDensity.minimumDensity,
-                            ),
-                          ),
-                        ],
+                      child: SingleChildScrollView(
+                        child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: algorithmSelection()),
                       ),
                     ),
                   ),

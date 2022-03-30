@@ -4,18 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:search_algorithm_visualiser/searches/binary_search.dart';
 import 'package:search_algorithm_visualiser/searches/fixed_step_search.dart';
+import 'package:search_algorithm_visualiser/searches/increasing_step_size_search.dart';
 import 'package:search_algorithm_visualiser/searches/linear_Search.dart';
 import 'package:search_algorithm_visualiser/searches/search_class.dart';
 import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
 
 const Duration updateInterval = Duration(milliseconds: 500);
 const Duration animationDuration = Duration(seconds: 1);
-
-// TODO: Live option to change animation speed [Animation Duration Slider in custom Painter]
-
-// TODO: Try and implement the siv idea
-
-// TODO: Add zoom
 
 class PainterBuilder extends StatefulWidget {
   final Widget Function(BuildContext context, SearchClass searchClass) builder;
@@ -24,6 +19,7 @@ class PainterBuilder extends StatefulWidget {
   final int searchFor;
   final SearchAlgorithm searchAlgorithm;
   final int fixedStep;
+  final double Function()? getSpeedSliderVal;
   final Function? notifyParent;
   Function? getSearch;
 
@@ -35,6 +31,7 @@ class PainterBuilder extends StatefulWidget {
     required this.searchAlgorithm,
     required this.fixedStep,
     required this.notifyParent,
+    this.getSpeedSliderVal,
   }) : super(key: key);
 
   @override
@@ -47,6 +44,7 @@ Widget customPainterBuilder(
   int searchFor,
   SearchAlgorithm algorithm,
   int fixedStep,
+  double Function() getSpeedSlider,
   Function? function,
 ) {
   SystemChrome.setPreferredOrientations([
@@ -60,6 +58,7 @@ Widget customPainterBuilder(
     searchAlgorithm: algorithm,
     fixedStep: fixedStep,
     notifyParent: function,
+    getSpeedSliderVal: getSpeedSlider,
     builder: (context, search) {
       return CustomPaint(
         painter: CustomCanvas(search),
@@ -74,7 +73,7 @@ class _PainterBuilderState extends State<PainterBuilder>
 
   late final Timer _timer;
   late SearchClass search;
-  late AnimationController _animationController;
+  late AnimationController animationController;
   late Animation<double> offset;
   bool canRun = true;
 
@@ -82,7 +81,7 @@ class _PainterBuilderState extends State<PainterBuilder>
   void initState() {
     super.initState();
 
-    _animationController =
+    animationController =
         AnimationController(vsync: this, duration: animationDuration);
 
     offset = TweenSequence(<TweenSequenceItem<double>>[
@@ -94,7 +93,7 @@ class _PainterBuilderState extends State<PainterBuilder>
         tween: Tween<double>(begin: SearchClass.maxAnimationHeight, end: 0),
         weight: 5,
       ),
-    ]).animate(_animationController)
+    ]).animate(animationController)
       ..addListener(() => setState(() {}));
 
     search = getSearchAlgorithm();
@@ -120,11 +119,21 @@ class _PainterBuilderState extends State<PainterBuilder>
         _search = FixedStepSearch(
             widget.arrSize, widget.searchFor, offset, widget.fixedStep);
         break;
+      case SearchAlgorithm.increasingStep:
+        _search =
+            IncreasingStepSizeSearch(widget.arrSize, widget.searchFor, offset);
+        break;
     }
     return _search;
   }
 
   void _onTick() {
+    if (widget.getSpeedSliderVal!().toInt() !=
+        animationController.duration!.inMilliseconds * 10) {
+      animationController.duration =
+          Duration(milliseconds: widget.getSpeedSliderVal!().toInt() * 10);
+    }
+
     if (canRun) {
       for (var element in search.arr) {
         element.color = Colors.blue;
@@ -132,13 +141,13 @@ class _PainterBuilderState extends State<PainterBuilder>
 
       search.iteration();
 
-      _animationController.reset();
-      _animationController.forward();
+      animationController.reset();
+      animationController.forward();
       widget.notifyParent!();
       setState(() {});
     }
 
-    canRun = !_animationController.isAnimating;
+    canRun = !animationController.isAnimating;
   }
 
   @override
@@ -155,7 +164,7 @@ class _PainterBuilderState extends State<PainterBuilder>
 
   @override
   void dispose() {
-    _animationController.dispose();
+    animationController.dispose();
     _timer.cancel();
     super.dispose();
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/screens/animation_screen.dart';
 import 'package:search_algorithm_visualiser/screens/chart_screen.dart';
 import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
+import 'package:search_algorithm_visualiser/widgets/expanding_slider.dart';
 
 class DetailsScreen extends StatefulWidget {
   final int arrSize;
@@ -25,9 +26,17 @@ class _DetailsScreenState extends State<DetailsScreen>
     with TickerProviderStateMixin {
   final List<bool> isSelected = List<bool>.from({true, false});
 
-  @override
-  void initState() {
-    super.initState();
+  late ExpandingSlider slider;
+  double speedSlider = 0;
+
+  void setSpeedSlider(double? val) {
+    setState(() {
+      speedSlider = val!;
+    });
+  }
+
+  double getSpeedSlider() {
+    return speedSlider;
   }
 
   Widget givenScreen(List<bool> toggle) {
@@ -38,6 +47,7 @@ class _DetailsScreenState extends State<DetailsScreen>
         searchFor: widget.searchFor,
         algorithm: widget.algorithm,
         fixedStep: widget.fixedStep,
+        getSpeedSliderVal: getSpeedSlider,
       );
     } else {
       // Live Chart
@@ -54,37 +64,49 @@ class _DetailsScreenState extends State<DetailsScreen>
     return Scaffold(
       body: Row(
         children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.06,
-            height: MediaQuery.of(context).size.height,
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(4),
-                child: ToggleButtons(
-                  direction: Axis.vertical,
-                  isSelected: isSelected,
-                  children: const [
-                    Icon(Icons.animation),
-                    Icon(Icons.insert_chart_outlined),
-                  ],
-                  onPressed: (int index) {
-                    setState(() {
-                      for (var i = 0; i < isSelected.length; i++) {
-                        if (i == index) {
-                          isSelected[i] = true;
-                        } else {
-                          isSelected[i] = false;
-                        }
-                      }
-                    });
-                  },
+          Flexible(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: ToggleButtons(
+                      direction: Axis.vertical,
+                      isSelected: isSelected,
+                      children: const [
+                        Icon(Icons.animation),
+                        Icon(Icons.insert_chart_outlined),
+                      ],
+                      onPressed: (int index) {
+                        setState(() {
+                          for (var i = 0; i < isSelected.length; i++) {
+                            if (i == index) {
+                              isSelected[i] = true;
+                            } else {
+                              isSelected[i] = false;
+                            }
+                          }
+                        });
+                      },
+                    ),
+                  ),
                 ),
-              ),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: ExpandingSlider(
+                      setter: setSpeedSlider,
+                      getter: getSpeedSlider,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.94,
-            height: MediaQuery.of(context).size.height,
+          Flexible(
+            flex: 14,
             child: givenScreen(isSelected),
           ),
         ],

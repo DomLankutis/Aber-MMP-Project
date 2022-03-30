@@ -36,7 +36,7 @@ class _ChartAlgorithmSelectorState extends State<ChartAlgorithmSelector> {
                 ),
               ),
               Flexible(
-                flex: 5,
+                flex: 4,
                 child: Text(getAlgorithmName(searchAlgorithm)),
               ),
             ],
@@ -53,6 +53,7 @@ class _ChartAlgorithmSelectorState extends State<ChartAlgorithmSelector> {
         selector(SearchAlgorithm.linear),
         selector(SearchAlgorithm.binary),
         selector(SearchAlgorithm.fixed),
+        selector(SearchAlgorithm.increasingStep),
       ],
     );
   }

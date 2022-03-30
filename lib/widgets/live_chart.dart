@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/misc/helper.dart';
 import 'package:search_algorithm_visualiser/searches/binary_search.dart';
 import 'package:search_algorithm_visualiser/searches/fixed_step_search.dart';
+import 'package:search_algorithm_visualiser/searches/increasing_step_size_search.dart';
 import 'package:search_algorithm_visualiser/searches/linear_Search.dart';
 import 'package:search_algorithm_visualiser/searches/search_class.dart';
 import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
@@ -77,6 +78,11 @@ class _LiveChartState extends State<LiveChart> {
           widget.fixedStep == 0
               ? sqrt(widget.arraySize).abs().toInt()
               : widget.fixedStep));
+    }
+
+    if (widget.enabledSearches[SearchAlgorithm.increasingStep]!) {
+      searches.add(
+          IncreasingStepSizeSearch(widget.arraySize, widget.searchFor, null));
     }
   }
 

@@ -74,6 +74,7 @@ class BinarySearch extends SearchClass {
       } else if (arr[middle].value == searchFor) {
         codeAt += "\n\t\treturn \n}";
         super.iteration();
+        finished = true;
         return;
       } else {
         codeAt += "\n} else {\n\tlast = middle - 1;\n}";
@@ -93,19 +94,19 @@ class BinarySearch extends SearchClass {
     }
   }
 
-  @override
-  void render(Canvas canvas, Size size) {
-    for (var item in arr) {
-      paint.color = item.color;
-
-      var i = item.value;
-      var _size = getPixelSize(size);
-      var pos = Offset(SearchClass.gap * i + (i * _size.width),
-          50 + ((item.color == Colors.yellow) ? offset!.value : 0));
-
-      canvas.drawRect(pos & _size, paint);
-    }
-  }
+  // @override
+  // void render(Canvas canvas, Size size) {
+  //   for (var item in arr) {
+  //     paint.color = item.color;
+  //
+  //     var i = item.value;
+  //     var _size = getPixelSize(size);
+  //     var pos = Offset(SearchClass.gap * i + (i * _size.width),
+  //         50 + ((item.color == Colors.yellow) ? offset!.value : 0));
+  //
+  //     canvas.drawRect(pos & _size, paint);
+  //   }
+  // }
 
   @override
   void fastRun() {

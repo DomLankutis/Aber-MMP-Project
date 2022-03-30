@@ -5,6 +5,7 @@ const Map<SearchAlgorithm, Color> lineColor = {
   SearchAlgorithm.linear: Colors.red,
   SearchAlgorithm.binary: Colors.blue,
   SearchAlgorithm.fixed: Colors.green,
+  SearchAlgorithm.increasingStep: Colors.yellow
 };
 
 String getAlgorithmName(SearchAlgorithm searchAlgorithm) {
@@ -18,6 +19,9 @@ String getAlgorithmName(SearchAlgorithm searchAlgorithm) {
       break;
     case SearchAlgorithm.fixed:
       str = "Fixed Step Size Search";
+      break;
+    case SearchAlgorithm.increasingStep:
+      str = "Increasing Step Size Search";
       break;
   }
   return str;

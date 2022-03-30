@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/searches/binary_search.dart';
 import 'package:search_algorithm_visualiser/searches/fixed_step_search.dart';
+import 'package:search_algorithm_visualiser/searches/increasing_step_size_search.dart';
 import 'package:search_algorithm_visualiser/searches/linear_Search.dart';
 import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
 
@@ -37,6 +38,9 @@ class HelpWidget extends StatelessWidget {
         return BinarySearch.getColorExplanations();
       case SearchAlgorithm.fixed:
         return FixedStepSearch.getColorExplanations();
+      case SearchAlgorithm.increasingStep:
+        return IncreasingStepSizeSearch.getColorExplanations();
+        break;
     }
   }
 

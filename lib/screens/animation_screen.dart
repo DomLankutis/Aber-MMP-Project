@@ -8,12 +8,15 @@ class AnimationScreen extends StatefulWidget {
   final SearchAlgorithm algorithm;
   final int fixedStep;
 
+  final double Function() getSpeedSliderVal;
+
   const AnimationScreen({
     Key? key,
     required this.arrSize,
     required this.searchFor,
     required this.algorithm,
     required this.fixedStep,
+    required this.getSpeedSliderVal,
   }) : super(key: key);
 
   @override
@@ -71,61 +74,70 @@ class _AnimationScreenState extends State<AnimationScreen> {
       widget.searchFor,
       widget.algorithm,
       widget.fixedStep,
+      widget.getSpeedSliderVal,
       printStates,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          flex: 1,
-          child: _customPainter,
-        ),
-        Expanded(
-          flex: 2,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: Card(
-                  child: Column(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 12, 8, 12),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            flex: 1,
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: _customPainter,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: Card(
+                    child: Column(
+                      children: [
+                        const Expanded(child: Text("Variable States")),
+                        Expanded(
+                          flex: 10,
+                          child: Card(
+                              child: Column(
+                            children: _list,
+                          )),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Card(
+                      child: Column(
                     children: [
-                      const Expanded(child: Text("Variable States")),
+                      const Expanded(child: Text("Current Code Scope")),
                       Expanded(
                         flex: 10,
                         child: Card(
-                            child: Column(
-                          children: _list,
-                        )),
-                      ),
+                          child: Text(code),
+                        ),
+                      )
                     ],
-                  ),
+                  )),
                 ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Card(
-                    child: Column(
-                  children: [
-                    const Expanded(child: Text("Current Code Scope")),
-                    Expanded(
-                      flex: 10,
-                      child: Card(
-                        child: Text(code),
-                      ),
-                    )
-                  ],
-                )),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

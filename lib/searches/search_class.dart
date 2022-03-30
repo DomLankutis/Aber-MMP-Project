@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/misc/array_element.dart';
 import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
 
-// TODO: Add IncreasedFixedStepSize
-// TODO: add finished bool to stop iteration count;
-
 abstract class SearchClass {
   static const double maxAnimationHeight = 10;
   static const double smallestPixelSize = 2;
@@ -20,7 +17,7 @@ abstract class SearchClass {
 
   static int getMaxArraySize() {
     var _screenWidth =
-        (window.physicalSize / window.devicePixelRatio).width * 0.8;
+        (window.physicalSize / window.devicePixelRatio).width * 0.75;
     var arraySize = _screenWidth / smallestPixelSize;
     var totalGapSize = (_screenWidth / arraySize) * gap;
     var effectiveScreenSize = _screenWidth - totalGapSize;
@@ -46,8 +43,10 @@ abstract class SearchClass {
   int iterationCount = 0;
   int fastOperationCount = 0;
   String codeAt = "";
+  bool finished;
 
-  SearchClass(this.arraySize, this.searchFor, this.paint, this.offset) {
+  SearchClass(this.arraySize, this.searchFor, this.paint, this.offset)
+      : finished = false {
     arr = List.generate(arraySize, (index) => ArrayElement(index, Colors.blue));
 
     textPainter = TextPainter(
@@ -73,7 +72,10 @@ abstract class SearchClass {
 
   void iteration() {
     arr[searchFor].color = Colors.red;
-    iterationCount++;
+
+    if (!finished) {
+      iterationCount++;
+    }
   }
 
   void resetFastIterCount() {
@@ -98,15 +100,18 @@ abstract class SearchClass {
       var pos = Offset(gap * i + (i * _size.width),
           50.0 + (item.color == Colors.yellow ? offset!.value : 0));
 
-      // ADD: if the size is greater than small
-      if (_size.width >= smallestPixelSize) {
+      if (_size.width >= 15) {
         textPainter.text = TextSpan(
             text: item.value.toString(), style: const TextStyle(fontSize: 12));
         textPainter.layout(maxWidth: double.infinity);
       }
 
       canvas.drawRect(pos & _size, paint);
-      textPainter.paint(canvas, pos + const Offset(2.5, 0));
+      textPainter.paint(
+          canvas,
+          pos +
+              Offset(_size.width / 2 - textPainter.width / 2,
+                  _size.width / 2 - textPainter.height / 2));
     }
   }
 }
