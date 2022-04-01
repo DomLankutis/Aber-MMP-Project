@@ -20,6 +20,19 @@ class BinarySearch extends SearchClass {
     _fastMiddle = middle;
 
     identifier = SearchAlgorithm.binary;
+
+    code = [
+      "while (_fastFirst <= _fastLast) {",
+      "    _fastMiddle = ((_fastFirst + _fastLast) / 2).floor();",
+      "    if (fastArr[_fastMiddle] == fastSearchFor) {",
+      "        return;",
+      "    } else if (fastArr[_fastMiddle] > fastSearchFor) {",
+      "        _fastLast = _fastMiddle - 1;",
+      "    } else {",
+      "        fastFirst = _fastMiddle + 1;",
+      "    }",
+      "}",
+    ];
   }
 
   @override
@@ -54,34 +67,30 @@ class BinarySearch extends SearchClass {
   }
 
   @override
-  String getCodeScope() {
-    return codeAt;
+  List<String> getCode() {
+    return code;
   }
 
   @override
   void iteration() {
     super.iteration();
-    codeAt = "\nif (first <= last) {";
 
     if (first <= last) {
-      codeAt += "\n\tif (arr[middle].value < searchFor) {";
+      setCodeAt([0, 1, 9]);
 
-      if (arr[middle].value < searchFor) {
-        codeAt += "\n\t\tfirst = middle + 1; \n}"
-            " else if (arr[middle].value == searchFor) {";
-
-        first = middle + 1;
-      } else if (arr[middle].value == searchFor) {
-        codeAt += "\n\t\treturn \n}";
-        super.iteration();
+      if (arr[middle].value == searchFor) {
+        setCodeAt([0, 9, 2, 3, 4]);
         finished = true;
+        super.iteration();
         return;
-      } else {
-        codeAt += "\n} else {\n\tlast = middle - 1;\n}";
+      } else if (arr[middle].value > searchFor) {
+        setCodeAt([0, 9, 4, 5, 6]);
         last = middle - 1;
+      } else {
+        setCodeAt([0, 9, 6, 7, 8]);
+        first = middle + 1;
       }
 
-      codeAt += "\nmiddle = ((first + last) / 2).floor();";
       middle = getMiddle();
 
       arr[first].color = Colors.green;
@@ -93,20 +102,6 @@ class BinarySearch extends SearchClass {
       return;
     }
   }
-
-  // @override
-  // void render(Canvas canvas, Size size) {
-  //   for (var item in arr) {
-  //     paint.color = item.color;
-  //
-  //     var i = item.value;
-  //     var _size = getPixelSize(size);
-  //     var pos = Offset(SearchClass.gap * i + (i * _size.width),
-  //         50 + ((item.color == Colors.yellow) ? offset!.value : 0));
-  //
-  //     canvas.drawRect(pos & _size, paint);
-  //   }
-  // }
 
   @override
   void fastRun() {

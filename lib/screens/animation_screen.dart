@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
+import 'package:search_algorithm_visualiser/widgets/code_explainer.dart';
 import 'package:search_algorithm_visualiser/widgets/custom_painter.dart';
 
 class AnimationScreen extends StatefulWidget {
@@ -25,14 +26,17 @@ class AnimationScreen extends StatefulWidget {
 
 class _AnimationScreenState extends State<AnimationScreen> {
   List<Widget> _list = List.empty(growable: true);
-  String code = "";
+
   late Widget _customPainter;
+
+  List<String> Function()? getCode;
+  List<int> Function()? getCodeAt;
 
   void printStates() {
     _list = List.empty(growable: true);
 
     PainterBuilder _pB = _customPainter as PainterBuilder;
-    for (var e in _pB.getSearch!().getVariableStates().entries) {
+    for (var e in _pB.getSearch().getVariableStates().entries) {
       _list.add(
         SizedBox(
           width: 200,
@@ -60,7 +64,8 @@ class _AnimationScreenState extends State<AnimationScreen> {
       );
     }
 
-    code = _pB.getSearch!().codeAt;
+    getCode = _pB.getSearch().getCode;
+    getCodeAt = _pB.getSearch().getCodeAt;
 
     setState(() {});
   }
@@ -121,17 +126,19 @@ class _AnimationScreenState extends State<AnimationScreen> {
                 Expanded(
                   flex: 3,
                   child: Card(
-                      child: Column(
-                    children: [
-                      const Expanded(child: Text("Current Code Scope")),
-                      Expanded(
-                        flex: 10,
-                        child: Card(
-                          child: Text(code),
-                        ),
-                      )
-                    ],
-                  )),
+                    child: Column(
+                      children: [
+                        const Expanded(child: Text("Current Explanation")),
+                        Expanded(
+                          flex: 10,
+                          child: CodeExplainer(
+                            getCode: getCode,
+                            getCodeAt: getCodeAt,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),

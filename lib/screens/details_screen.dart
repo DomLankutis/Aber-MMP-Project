@@ -27,7 +27,7 @@ class _DetailsScreenState extends State<DetailsScreen>
   final List<bool> isSelected = List<bool>.from({true, false});
 
   late ExpandingSlider slider;
-  double speedSlider = 0;
+  double speedSlider = 100;
 
   void setSpeedSlider(double? val) {
     setState(() {

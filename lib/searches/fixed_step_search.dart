@@ -14,11 +14,24 @@ class FixedStepSearch extends SearchClass {
   FixedStepSearch(
       int arrSize, int searchFor, Animation<double>? offset, this.stepSize)
       : super(arrSize, searchFor, Paint(), offset) {
-    _whileLoopConditionMet =
-        (position < arrSize) && (arr[position].value < searchFor);
     _initialStepSize = stepSize;
 
     identifier = SearchAlgorithm.fixed;
+
+    code = [
+      "while ((_pos < fastArr.length) && (fastArr[_pos] < fastSearchFor)) {",
+      "    _pos += stepSize;",
+      "}",
+      "if ((_pos >= fastArr.length) || (fastArr[_pos] > fastSearchFor)) {",
+      "    do {",
+      "        _pos--;",
+      "        _stepSize--;",
+      "        if ((_pos < fastArr.length) && (fastArr[_pos] == fastSearchFor)) {",
+      "            return;",
+      "        }",
+      "    } while (_stepSize > 0);",
+      "}",
+    ];
   }
 
   @override
@@ -75,37 +88,27 @@ class FixedStepSearch extends SearchClass {
   void iteration() {
     super.iteration();
 
-    if (_whileLoopConditionMet) {
-      codeAt =
-          "\nwhile((position < arraySize) && (arr[position].value < searchFor)) {"
-          "\n\tposition += stepSize;\n}";
+    _whileLoopConditionMet =
+        (position < arraySize) && (arr[position].value < searchFor);
 
+    if (_whileLoopConditionMet) {
+      setCodeAt([0, 1, 2]);
       position += stepSize;
       arr[position].color = Colors.yellow;
-      _whileLoopConditionMet =
-          (position < arraySize) && (arr[position].value < searchFor);
+
       return;
     }
 
     if ((position >= arraySize) || (arr[position].value > searchFor)) {
-      codeAt =
-          "\nif ((position >= arraySize) || (arr[position].value > searchFor)) {";
+      setCodeAt([3, 4, 5, 6, 7, 8, 9, 10, 11]);
       if (stepSize > 0) {
-        codeAt += "\n\tif (stepSize > 0) {"
-            "\n\t\tposition--;"
-            "\n\t\tstepSize--;";
         position--;
         stepSize--;
         arr[position].color = Colors.yellow;
         if ((position < arraySize) && (arr[position].value == searchFor)) {
+          setCodeAt([3, 11, 7, 8, 9]);
           finished = true;
-          codeAt +=
-              "\n\t\tif ((position < arraySize) && (arr[position].value == searchFor)) {"
-              "\n\t\t\treturn; // Found item"
-              "\n\t\t}\n}";
           return;
-        } else {
-          codeAt += "\n\t}\n}";
         }
       }
     }
@@ -118,10 +121,5 @@ class FixedStepSearch extends SearchClass {
       "Position": position,
       "StepSize": stepSize
     };
-  }
-
-  @override
-  String getCodeScope() {
-    return codeAt;
   }
 }

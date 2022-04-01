@@ -5,9 +5,19 @@ import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
 class LinearSearch extends SearchClass {
   int lookingAt = 0;
 
-  LinearSearch(int arrSize, int searchFor, Animation<double>? offset)
-      : super(arrSize, searchFor, Paint(), offset) {
+  LinearSearch(
+    int arrSize,
+    int searchFor,
+    Animation<double>? offset,
+  ) : super(arrSize, searchFor, Paint(), offset) {
     identifier = SearchAlgorithm.linear;
+    code = [
+      "for (; i < fastArr.length; i++) {",
+      "    if (fastArr[i] == fastSearchFor) {",
+      "        return;",
+      "    }",
+      "}",
+    ];
   }
 
   static Map<Color, String> getColorExplanations() {
@@ -34,10 +44,11 @@ class LinearSearch extends SearchClass {
   void iteration() {
     super.iteration();
     arr[lookingAt].color = Colors.yellow;
+    setCodeAt([0, 4]);
 
     if (arr[lookingAt].value != searchFor) {
+      setCodeAt([0, 1, 2, 3, 4]);
       lookingAt++;
-      codeAt = "if (arr[lookingAt].value != searchFor)";
     }
 
     finished = true;
@@ -46,10 +57,5 @@ class LinearSearch extends SearchClass {
   @override
   Map<String, int> getVariableStates() {
     return {"Iteration": iterationCount, "Looking at": lookingAt};
-  }
-
-  @override
-  String getCodeScope() {
-    return codeAt;
   }
 }

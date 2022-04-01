@@ -42,7 +42,8 @@ abstract class SearchClass {
 
   int iterationCount = 0;
   int fastOperationCount = 0;
-  String codeAt = "";
+  List<String> code = [];
+  List<int> codeAt = [];
   bool finished;
 
   SearchClass(this.arraySize, this.searchFor, this.paint, this.offset)
@@ -60,7 +61,13 @@ abstract class SearchClass {
 
   Map<String, int> getVariableStates();
 
-  String getCodeScope();
+  List<String> getCode() => code;
+
+  List<int> getCodeAt() => codeAt;
+
+  void setCodeAt(List<int> codeAt) {
+    this.codeAt = codeAt;
+  }
 
   /*
     Assumes we only run for the live chart

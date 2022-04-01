@@ -21,7 +21,8 @@ class PainterBuilder extends StatefulWidget {
   final int fixedStep;
   final double Function()? getSpeedSliderVal;
   final Function? notifyParent;
-  Function? getSearch;
+  late SearchClass Function() getSearch;
+  bool Function()? getCanRun;
 
   PainterBuilder({
     Key? key,
@@ -81,6 +82,8 @@ class _PainterBuilderState extends State<PainterBuilder>
   void initState() {
     super.initState();
 
+    widget.getCanRun = () => canRun;
+
     animationController =
         AnimationController(vsync: this, duration: animationDuration);
 
@@ -98,9 +101,7 @@ class _PainterBuilderState extends State<PainterBuilder>
 
     search = getSearchAlgorithm();
 
-    widget.getSearch = () {
-      return search;
-    };
+    widget.getSearch = () => search;
 
     _timer = Timer.periodic(updateInterval, (timer) => {_onTick()});
   }
@@ -173,7 +174,9 @@ class _PainterBuilderState extends State<PainterBuilder>
 class CustomCanvas extends CustomPainter {
   SearchClass search;
 
-  CustomCanvas(this.search);
+  CustomCanvas(
+    this.search,
+  );
 
   @override
   void paint(Canvas canvas, Size size) {
