@@ -9,7 +9,7 @@ import 'package:search_algorithm_visualiser/searches/linear_Search.dart';
 import 'package:search_algorithm_visualiser/searches/search_class.dart';
 import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
 
-const Duration updateInterval = Duration(milliseconds: 500);
+const Duration updateInterval = Duration(milliseconds: 250);
 const Duration animationDuration = Duration(seconds: 1);
 
 class PainterBuilder extends StatefulWidget {

@@ -69,37 +69,33 @@ class _DetailsScreenState extends State<DetailsScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: ToggleButtons(
-                      direction: Axis.vertical,
-                      isSelected: isSelected,
-                      children: const [
-                        Icon(Icons.animation),
-                        Icon(Icons.insert_chart_outlined),
-                      ],
-                      onPressed: (int index) {
-                        setState(() {
-                          for (var i = 0; i < isSelected.length; i++) {
-                            if (i == index) {
-                              isSelected[i] = true;
-                            } else {
-                              isSelected[i] = false;
-                            }
+                Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: ToggleButtons(
+                    direction: Axis.vertical,
+                    isSelected: isSelected,
+                    children: const [
+                      Icon(Icons.animation),
+                      Icon(Icons.insert_chart_outlined),
+                    ],
+                    onPressed: (int index) {
+                      setState(() {
+                        for (var i = 0; i < isSelected.length; i++) {
+                          if (i == index) {
+                            isSelected[i] = true;
+                          } else {
+                            isSelected[i] = false;
                           }
-                        });
-                      },
-                    ),
+                        }
+                      });
+                    },
                   ),
                 ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: ExpandingSlider(
-                      setter: setSpeedSlider,
-                      getter: getSpeedSlider,
-                    ),
+                Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: ExpandingSlider(
+                    setter: setSpeedSlider,
+                    getter: getSpeedSlider,
                   ),
                 ),
               ],

@@ -18,7 +18,7 @@ class _CodeExplainerState extends State<CodeExplainer>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
-  int highlightedLine = 0;
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -46,19 +46,37 @@ class _CodeExplainerState extends State<CodeExplainer>
       }
 
       arr.add(
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Expanded(
-            child: Card(
-              color: color,
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text(codeLine.value),
-              ),
+        Flexible(
+          child: Card(
+            color: color,
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text(codeLine.value),
             ),
           ),
         ),
       );
+    }
+
+    if (scrollController.hasClients && codeAt.isNotEmpty) {
+      int scrollTo = codeAt.fold(0,
+              (previousValue, element) => (previousValue as int) + element) ~/
+          codeAt.length;
+
+      var codeHeight =
+          scrollController.position.maxScrollExtent ~/ code.length - 1;
+      var padding = codeHeight * 3;
+
+      scrollTo = scrollTo * codeHeight;
+
+      if (scrollTo > padding * 2) {
+        scrollTo += padding;
+      } else if (scrollTo < padding * 1.5) {
+        scrollTo -= (padding * 0.75).toInt();
+      }
+
+      scrollController.animateTo(scrollTo.toDouble(),
+          duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
     }
 
     return arr;
@@ -68,7 +86,10 @@ class _CodeExplainerState extends State<CodeExplainer>
   Widget build(BuildContext context) {
     return Card(
       child: SingleChildScrollView(
+        controller: scrollController,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: codeLines(),
         ),
       ),

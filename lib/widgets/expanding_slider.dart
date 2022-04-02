@@ -24,6 +24,7 @@ class _ExpandingSliderState extends State<ExpandingSlider> {
           child: const Icon(Icons.speed),
         ),
         expanded: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             ExpandableButton(
               child: ExpandableIcon(),

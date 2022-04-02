@@ -44,14 +44,14 @@ class LinearSearch extends SearchClass {
   void iteration() {
     super.iteration();
     arr[lookingAt].color = Colors.yellow;
-    setCodeAt([0, 4]);
+    setCodeAt([]);
 
     if (arr[lookingAt].value != searchFor) {
       setCodeAt([0, 1, 2, 3, 4]);
       lookingAt++;
+    } else {
+      finished = true;
     }
-
-    finished = true;
   }
 
   @override

@@ -38,12 +38,13 @@ class IncreasingStepSizeSearch extends SearchClass {
       "        _position = _left;",
       "    } else {",
       "        _left = _position + 1;",
-      "    if ((_position + _stepLength) <= _right) {",
-      "        _position += _stepLength;",
-      "        _stepLength *= 2;",
-      "    } else {",
-      "        _stepLength = 1;",
-      "        _position += _stepLength;",
+      "        if ((_position + _stepLength) <= _right) {",
+      "            _position += _stepLength;",
+      "            _stepLength *= 2;",
+      "        } else {",
+      "            _stepLength = 1;",
+      "            _position += _stepLength;",
+      "        }",
       "    }",
       "}",
     ];
@@ -53,26 +54,26 @@ class IncreasingStepSizeSearch extends SearchClass {
   void iteration() {
     super.iteration();
     if (_whileConditionMet) {
-      setCodeAt([0, 15]);
+      setCodeAt([0, 17]);
       _whileConditionMet = (left <= right);
       if (arr[position].value == searchFor) {
-        setCodeAt([0, 15, 1, 2, 3]);
+        setCodeAt([0, 17, 1, 2, 3]);
         finished = true;
         return;
       } else if (arr[position].value > searchFor) {
-        setCodeAt([0, 15, 3, 4, 5, 6]);
+        setCodeAt([0, 17, 3, 4, 5, 6, 7]);
         right = position - 1;
         stepLength = 1;
         position = left;
       } else {
-        setCodeAt([0, 15, 6, 7, 11]);
+        setCodeAt([0, 17, 7, 8, 16]);
         left = position + 1;
         if (position + stepLength <= right) {
-          setCodeAt([0, 15, 6, 8, 9, 10, 11]);
+          setCodeAt([0, 17, 9, 10, 11, 12]);
           position += stepLength;
           stepLength *= 2;
         } else {
-          setCodeAt([0, 15, 6, 11, 12, 13, 14]);
+          setCodeAt([0, 17, 12, 13, 14, 15]);
           stepLength = 1;
           position += stepLength;
         }
