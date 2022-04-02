@@ -44,13 +44,15 @@ class _ChartScreenState extends State<ChartScreen> {
       children: [
         Flexible(
           flex: 8,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-            child: LiveChart(
-              arraySize: widget.arraySize,
-              searchFor: widget.searchFor,
-              fixedStep: widget.fixedStep,
-              enabledSearches: enabledSearches,
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: LiveChart(
+                arraySize: widget.arraySize,
+                searchFor: widget.searchFor,
+                fixedStep: widget.fixedStep,
+                enabledSearches: enabledSearches,
+              ),
             ),
           ),
         ),
