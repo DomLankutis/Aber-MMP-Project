@@ -40,7 +40,6 @@ class HelpWidget extends StatelessWidget {
         return FixedStepSearch.getColorExplanations();
       case SearchAlgorithm.increasingStep:
         return IncreasingStepSizeSearch.getColorExplanations();
-        break;
     }
   }
 

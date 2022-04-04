@@ -1,5 +1,6 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:search_algorithm_visualiser/styles/custom_slider_thumb_rect.dart';
 
 class ExpandingSlider extends StatefulWidget {
   final Function(double? val) setter;
@@ -32,13 +33,30 @@ class _ExpandingSliderState extends State<ExpandingSlider> {
             Flexible(
               child: RotatedBox(
                 quarterTurns: 1,
-                child: Slider(
-                  min: 0,
-                  max: 100,
-                  divisions: 100,
-                  value: widget.getter(),
-                  label: widget.getter().toInt().toString(),
-                  onChanged: widget.setter,
+                child: Card(
+                  // We pad horizontal because it gets rotated later
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        thumbShape: const CustomSliderThumbRect(
+                          min: 0,
+                          max: 100,
+                          thumbRadius: 10,
+                          thumbHeight: 40,
+                        ),
+                        showValueIndicator: ShowValueIndicator.never,
+                      ),
+                      child: Slider(
+                        min: 0,
+                        max: 100,
+                        divisions: 100,
+                        value: widget.getter(),
+                        label: widget.getter().toInt().toString(),
+                        onChanged: widget.setter,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),

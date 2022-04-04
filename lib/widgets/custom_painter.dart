@@ -130,7 +130,7 @@ class _PainterBuilderState extends State<PainterBuilder>
 
   void _onTick() {
     if (widget.getSpeedSliderVal!().toInt() !=
-        animationController.duration!.inMilliseconds * 10) {
+        animationController.duration!.inMilliseconds * 20) {
       animationController.duration =
           Duration(milliseconds: widget.getSpeedSliderVal!().toInt() * 10);
     }

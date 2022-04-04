@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:search_algorithm_visualiser/styles/custom_slider_thumb_rect.dart';
 import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
 
 import 'fixed_step_param_field.dart';
@@ -72,13 +73,24 @@ class _ParameterSelectionState extends State<ParameterSelection> {
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
                         ),
-                        child: Slider(
-                          value: _arraySizeSlider,
-                          min: 0,
-                          max: widget.maximumArraySize,
-                          divisions: widget.maximumArraySize.toInt(),
-                          label: _arraySizeSlider.round().toString(),
-                          onChanged: sliderParameterChanged,
+                        child: SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                            thumbShape: CustomSliderThumbRect(
+                              min: 0,
+                              max: widget.maximumArraySize.toInt(),
+                              thumbRadius: 10,
+                              thumbHeight: 40,
+                            ),
+                            showValueIndicator: ShowValueIndicator.never,
+                          ),
+                          child: Slider(
+                            value: _arraySizeSlider,
+                            min: 0,
+                            max: widget.maximumArraySize,
+                            divisions: widget.maximumArraySize.toInt(),
+                            label: _arraySizeSlider.round().toString(),
+                            onChanged: sliderParameterChanged,
+                          ),
                         ),
                       ),
                     ),
