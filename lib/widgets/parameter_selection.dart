@@ -78,7 +78,7 @@ class _ParameterSelectionState extends State<ParameterSelection> {
                             thumbShape: CustomSliderThumbRect(
                               min: 0,
                               max: widget.maximumArraySize.toInt(),
-                              thumbRadius: 10,
+                              thumbRadius: 6,
                               thumbHeight: 40,
                             ),
                             showValueIndicator: ShowValueIndicator.never,

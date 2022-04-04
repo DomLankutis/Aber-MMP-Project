@@ -15,6 +15,7 @@ class LiveChart extends StatefulWidget {
   final int arraySize;
   final int searchFor;
   final int fixedStep;
+  final double Function() getSliderValue;
 
   final Map<SearchAlgorithm, bool> enabledSearches;
 
@@ -24,6 +25,7 @@ class LiveChart extends StatefulWidget {
     required this.searchFor,
     required this.fixedStep,
     required this.enabledSearches,
+    required this.getSliderValue,
   }) : super(key: key);
 
   @override
@@ -37,8 +39,10 @@ class _LiveChartState extends State<LiveChart> {
   List<SearchClass> searches = List.empty(growable: true);
   int arraySize = 0;
 
+  //TODO: info widget
+
   void calculatePlotData() {
-    arraySize += 10000;
+    arraySize += (widget.getSliderValue() * 100).toInt();
     for (var i = 0; i < searches.length; i++) {
       SearchClass search = searches[i];
 
@@ -127,6 +131,22 @@ class _LiveChartState extends State<LiveChart> {
     return LineChart(
       LineChartData(
         lineBarsData: data,
+        clipData: FlClipData(
+          right: true,
+          top: true,
+          bottom: false,
+          left: false,
+        ),
+        axisTitleData: FlAxisTitleData(
+            show: true,
+            bottomTitle: AxisTitle(
+              showTitle: true,
+              titleText: "Array Size",
+            ),
+            leftTitle: AxisTitle(
+              showTitle: true,
+              titleText: "Number of operations",
+            )),
       ),
     );
   }

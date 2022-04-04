@@ -7,12 +7,14 @@ class ChartScreen extends StatefulWidget {
   final int arraySize;
   final int searchFor;
   final int fixedStep;
+  final double Function() getSliderValue;
 
   const ChartScreen({
     Key? key,
     required this.arraySize,
     required this.searchFor,
     required this.fixedStep,
+    required this.getSliderValue,
   }) : super(key: key);
 
   @override
@@ -52,6 +54,7 @@ class _ChartScreenState extends State<ChartScreen> {
                 searchFor: widget.searchFor,
                 fixedStep: widget.fixedStep,
                 enabledSearches: enabledSearches,
+                getSliderValue: widget.getSliderValue,
               ),
             ),
           ),

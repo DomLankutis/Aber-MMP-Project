@@ -42,7 +42,7 @@ class _ExpandingSliderState extends State<ExpandingSlider> {
                         thumbShape: const CustomSliderThumbRect(
                           min: 0,
                           max: 100,
-                          thumbRadius: 10,
+                          thumbRadius: 6,
                           thumbHeight: 40,
                         ),
                         showValueIndicator: ShowValueIndicator.never,

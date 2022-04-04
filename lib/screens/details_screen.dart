@@ -55,6 +55,7 @@ class _DetailsScreenState extends State<DetailsScreen>
         arraySize: widget.arrSize,
         searchFor: widget.searchFor,
         fixedStep: widget.fixedStep,
+        getSliderValue: getSpeedSlider,
       );
     }
   }
