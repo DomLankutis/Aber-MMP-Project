@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
 import 'package:search_algorithm_visualiser/widgets/code_explainer.dart';
 import 'package:search_algorithm_visualiser/widgets/custom_painter.dart';
+import 'package:search_algorithm_visualiser/widgets/info_widget.dart';
 
 class AnimationScreen extends StatefulWidget {
   final int arrSize;
@@ -111,7 +112,21 @@ class _AnimationScreenState extends State<AnimationScreen> {
                   child: Card(
                     child: Column(
                       children: [
-                        const Expanded(child: Text("Variable States")),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 6),
+                              child: Expanded(
+                                child: Text("Variable States"),
+                              ),
+                            ),
+                            InfoWidget(
+                              information:
+                                  "The variables used in the selected search algorithm and their current values",
+                            ),
+                          ],
+                        ),
                         Expanded(
                           flex: 10,
                           child: Card(
@@ -128,7 +143,21 @@ class _AnimationScreenState extends State<AnimationScreen> {
                   child: Card(
                     child: Column(
                       children: [
-                        const Expanded(child: Text("Current Explanation")),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 6),
+                              child: Expanded(
+                                child: Text("Current Explanation"),
+                              ),
+                            ),
+                            InfoWidget(
+                              information:
+                                  "Displays algorithm code and highlights currently running code",
+                            ),
+                          ],
+                        ),
                         Expanded(
                           flex: 10,
                           child: CodeExplainer(

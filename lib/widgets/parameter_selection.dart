@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/styles/custom_slider_thumb_rect.dart';
 import 'package:search_algorithm_visualiser/widgets/algorithm_selection.dart';
+import 'package:search_algorithm_visualiser/widgets/info_widget.dart';
 
 import 'fixed_step_param_field.dart';
 
@@ -25,7 +26,7 @@ class ParameterSelection extends StatefulWidget {
 }
 
 class _ParameterSelectionState extends State<ParameterSelection> {
-  double _arraySizeSlider = 0;
+  late double _arraySizeSlider;
   String? _elementToSearchFor;
 
   void parameterRadioListChanged(String? val) {
@@ -45,6 +46,12 @@ class _ParameterSelectionState extends State<ParameterSelection> {
   _ParameterSelectionState();
 
   @override
+  void initState() {
+    super.initState();
+    _arraySizeSlider = 10;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -52,9 +59,20 @@ class _ParameterSelectionState extends State<ParameterSelection> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
-                child: Text("Select Parameters"),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 6),
+                      child: Text("Select Parameters"),
+                    ),
+                    InfoWidget(
+                        information:
+                            "Select the all parameters for the chosen algorithm")
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsetsDirectional.all(5),
@@ -76,8 +94,8 @@ class _ParameterSelectionState extends State<ParameterSelection> {
                         child: SliderTheme(
                           data: SliderTheme.of(context).copyWith(
                             thumbShape: CustomSliderThumbRect(
-                              min: 0,
-                              max: widget.maximumArraySize.toInt(),
+                              min: 10,
+                              max: widget.maximumArraySize.toInt() - 10,
                               thumbRadius: 6,
                               thumbHeight: 40,
                             ),
@@ -85,9 +103,9 @@ class _ParameterSelectionState extends State<ParameterSelection> {
                           ),
                           child: Slider(
                             value: _arraySizeSlider,
-                            min: 0,
+                            min: 10,
                             max: widget.maximumArraySize,
-                            divisions: widget.maximumArraySize.toInt(),
+                            divisions: widget.maximumArraySize.toInt() - 10,
                             label: _arraySizeSlider.round().toString(),
                             onChanged: sliderParameterChanged,
                           ),
@@ -107,15 +125,26 @@ class _ParameterSelectionState extends State<ParameterSelection> {
                 padding: const EdgeInsetsDirectional.all(5),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
-                  child: Card(
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        const Text('Search For'),
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              0, 10, 0, 15),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 6),
+                            child: Text('Search For'),
+                          ),
+                          InfoWidget(
+                            information:
+                                "Select which element you would like to search for in the array",
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 15),
+                        child: Card(
                           child: Column(
                             children: [
                               RadioListTile<String>(
@@ -161,8 +190,8 @@ class _ParameterSelectionState extends State<ParameterSelection> {
                             ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

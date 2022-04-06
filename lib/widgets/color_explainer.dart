@@ -25,10 +25,10 @@ Widget rectExplainer(Color color, String text) {
   );
 }
 
-class HelpWidget extends StatelessWidget {
+class ColorExplainer extends StatelessWidget {
   final SearchAlgorithm algorithm;
 
-  const HelpWidget({Key? key, required this.algorithm}) : super(key: key);
+  const ColorExplainer({Key? key, required this.algorithm}) : super(key: key);
 
   Map<Color, String> getSearchColorExplanation() {
     switch (algorithm) {

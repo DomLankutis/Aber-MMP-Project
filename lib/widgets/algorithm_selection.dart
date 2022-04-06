@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:search_algorithm_visualiser/misc/helper.dart';
-import 'package:search_algorithm_visualiser/widgets/help_widget.dart';
+import 'package:search_algorithm_visualiser/widgets/color_explainer.dart';
+import 'package:search_algorithm_visualiser/widgets/info_widget.dart';
 
 enum SearchAlgorithm { linear, binary, fixed, increasingStep }
 
@@ -52,9 +53,21 @@ class AlgorithmSelectionState extends State<AlgorithmSelection> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              const Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
-                child: Text("Select Algorithm"),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 6),
+                      child: Text("Select Algorithm"),
+                    ),
+                    InfoWidget(
+                      information:
+                          "Select the algorithm you would like to search with.",
+                    ),
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
@@ -78,7 +91,7 @@ class AlgorithmSelectionState extends State<AlgorithmSelection> {
                   ),
                 ),
               ),
-              HelpWidget(
+              ColorExplainer(
                 algorithm: _searchAlgorithm,
               ),
             ],
