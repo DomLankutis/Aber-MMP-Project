@@ -78,7 +78,9 @@ abstract class SearchClass {
   }
 
   void iteration() {
-    arr[searchFor].color = Colors.red;
+    if (arr.isNotEmpty) {
+      arr[searchFor].color = Colors.red;
+    }
 
     if (!finished) {
       iterationCount++;

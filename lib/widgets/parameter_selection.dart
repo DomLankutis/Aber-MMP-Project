@@ -37,9 +37,9 @@ class _ParameterSelectionState extends State<ParameterSelection> {
   }
 
   void sliderParameterChanged(double? val) {
-    widget.sliderSetCallback(val);
+    widget.sliderSetCallback(val!.floorToDouble());
     setState(() {
-      _arraySizeSlider = val!;
+      _arraySizeSlider = val.floorToDouble();
     });
   }
 
@@ -106,7 +106,7 @@ class _ParameterSelectionState extends State<ParameterSelection> {
                             min: 10,
                             max: widget.maximumArraySize,
                             divisions: widget.maximumArraySize.toInt() - 10,
-                            label: _arraySizeSlider.round().toString(),
+                            label: _arraySizeSlider.floor().toString(),
                             onChanged: sliderParameterChanged,
                           ),
                         ),

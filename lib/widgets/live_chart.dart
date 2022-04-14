@@ -39,8 +39,6 @@ class _LiveChartState extends State<LiveChart> {
   List<SearchClass> searches = List.empty(growable: true);
   int arraySize = 0;
 
-  //TODO: info widget
-
   void calculatePlotData() {
     arraySize += (widget.getSliderValue() * 100).toInt();
     for (var i = 0; i < searches.length; i++) {
