@@ -117,9 +117,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
                           children: const [
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 6),
-                              child: Expanded(
-                                child: Text("Variable States"),
-                              ),
+                              child: Text("Variable States"),
                             ),
                             InfoWidget(
                               information:
@@ -148,9 +146,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
                           children: const [
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 6),
-                              child: Expanded(
-                                child: Text("Current Explanation"),
-                              ),
+                              child: Text("Current Explanation"),
                             ),
                             InfoWidget(
                               information:

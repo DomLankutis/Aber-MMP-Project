@@ -15,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  double _arraySizeSlider = 0;
+  double _arraySizeSlider = 10;
   SearchAlgorithm? _algorithm = SearchAlgorithm.linear;
   String? _elementToSearchFor;
   TextEditingController _textEditingController = TextEditingController()
