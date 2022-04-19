@@ -45,6 +45,26 @@ void main() {
       search.searchFor = Random().nextInt(search.arraySize - 1);
       runIterationsAndCheck(search);
     });
+
+    test("getCode returns valid code example", () {
+      LinearSearch search = LinearSearch(100, 0, null);
+
+      expect(search.getCode(), [
+        "for (; i < fastArr.length; i++) {",
+        "    if (fastArr[i] == fastSearchFor) {",
+        "        return;",
+        "    }",
+        "}",
+      ]);
+    });
+
+    test("updateArray creates new array and updates fastSearchFor", () {
+      LinearSearch search = LinearSearch(100, 0, null);
+
+      search.updateArray(1000);
+      expect(search.fastArr.length, 1000);
+      expect(search.fastSearchFor, 0);
+    });
   });
 
   group('Binary Search', () {
@@ -87,6 +107,31 @@ void main() {
 
       search.searchFor = Random().nextInt(search.arraySize - 1);
       runIterationsAndCheck(search);
+    });
+
+    test("getCode returns valid code example", () {
+      BinarySearch search = BinarySearch(0, 99, 100, 0, null);
+
+      expect(search.getCode(), [
+        "while (_fastFirst <= _fastLast) {",
+        "    _fastMiddle = ((_fastFirst + _fastLast) / 2).floor();",
+        "    if (fastArr[_fastMiddle] == fastSearchFor) {",
+        "        return;",
+        "    } else if (fastArr[_fastMiddle] > fastSearchFor) {",
+        "        _fastLast = _fastMiddle - 1;",
+        "    } else {",
+        "        fastFirst = _fastMiddle + 1;",
+        "    }",
+        "}",
+      ]);
+    });
+
+    test("updateArray creates new array and updates fastSearchFor", () {
+      BinarySearch search = BinarySearch(0, 99, 100, 0, null);
+
+      search.updateArray(1000);
+      expect(search.fastArr.length, 1000);
+      expect(search.fastSearchFor, 0);
     });
   });
 
@@ -131,6 +176,33 @@ void main() {
       search.searchFor = Random().nextInt(search.arraySize - 1);
       runIterationsAndCheck(search);
     });
+
+    test("getCode returns valid code example", () {
+      FixedStepSearch search = FixedStepSearch(100, 0, null, 5);
+
+      expect(search.getCode(), [
+        "while ((_pos < fastArr.length) && (fastArr[_pos] < fastSearchFor)) {",
+        "    _pos += stepSize;",
+        "}",
+        "if ((_pos >= fastArr.length) || (fastArr[_pos] > fastSearchFor)) {",
+        "    do {",
+        "        _pos--;",
+        "        _stepSize--;",
+        "        if ((_pos < fastArr.length) && (fastArr[_pos] == fastSearchFor)) {",
+        "            return;",
+        "        }",
+        "    } while (_stepSize > 0);",
+        "}",
+      ]);
+    });
+
+    test("updateArray creates new array and updates fastSearchFor", () {
+      FixedStepSearch search = FixedStepSearch(100, 0, null, 5);
+
+      search.updateArray(1000);
+      expect(search.fastArr.length, 1000);
+      expect(search.fastSearchFor, 0);
+    });
   });
 
   group('Increasing Step Size Search', () {
@@ -173,6 +245,39 @@ void main() {
 
       search.searchFor = Random().nextInt(search.arraySize - 1);
       runIterationsAndCheck(search);
+    });
+
+    test("getCode returns valid code example", () {
+      IncreasingStepSizeSearch search = IncreasingStepSizeSearch(100, 0, null);
+
+      expect(search.getCode(), [
+        "while (_left <= _right) {",
+        "    if (fastArr[_position] == fastSearchFor) {",
+        "        return;",
+        "    } else if (fastArr[_position] > fastSearchFor) {",
+        "        _right = _position - 1;",
+        "        _stepLength = 1;",
+        "        _position = _left;",
+        "    } else {",
+        "        _left = _position + 1;",
+        "        if ((_position + _stepLength) <= _right) {",
+        "            _position += _stepLength;",
+        "            _stepLength *= 2;",
+        "        } else {",
+        "            _stepLength = 1;",
+        "            _position += _stepLength;",
+        "        }",
+        "    }",
+        "}",
+      ]);
+    });
+
+    test("updateArray creates new array and updates fastSearchFor", () {
+      IncreasingStepSizeSearch search = IncreasingStepSizeSearch(100, 0, null);
+
+      search.updateArray(1000);
+      expect(search.fastArr.length, 1000);
+      expect(search.fastSearchFor, 0);
     });
   });
 }
